@@ -1,0 +1,24 @@
+{
+  "name": "dnd-telegram-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot for french info and utils for DnD",
+  "main": "dist/dnd-telegram-bot.cjs.js",
+  "module": "dist/dnd-telegram-bot.esm.js",
+  "scripts": {
+    "build": "pnpm preconstruct build",
+    "deploy": "pnpm build && pnpm zip && pnpm aws-deploy",
+    "zip": "cp dist/dnd-telegram-bot.cjs.prod.js aws/index.js && zip -m -j aws/function.zip aws/index.js",
+    "aws-deploy": "aws lambda update-function-code --function-name DnDTelegramBot --zip-file fileb://aws/function.zip",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-typescript": "^7.17.12",
+    "@preconstruct/cli": "^2.1.5",
+    "@types/node": "^18.0.0",
+    "typescript": "^4.7.4"
+  }
+}
