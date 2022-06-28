@@ -1,5 +1,5 @@
 import { commands } from "./commands";
-import { TelegramRequestBody } from "./types";
+import { TelegramRequestBody, TelegramRequestMessage } from "./types";
 import { ResponseData } from "./utils/commands";
 import { sendToUser } from "./utils/telegram-api";
 
@@ -9,27 +9,26 @@ export async function app(body: TelegramRequestBody) {
   console.log("body", body);
 
   if ("callback_query" in body) {
-    const { chat } = body.callback_query.message;
-    return executeCommand(chat, body.callback_query.data);
+    return executeCommand({
+      ...body.callback_query.message,
+      text: body.callback_query.data,
+      from: body.callback_query.from,
+    });
   } else {
-    const { chat, text } = body.message;
-    return executeCommand(chat, text);
+    return executeCommand(body.message);
   }
 }
 
-function executeCommand(
-  chat: { id: number; type: "private" | string },
-  text: string
-) {
+async function executeCommand(message: TelegramRequestMessage) {
   const respond = ({ text = "", params = {} }: ResponseData) =>
-    sendToUser(chat.id, text, params);
+    sendToUser(message.chat.id, text, params);
 
-  let [command, params] = parseCommand(text) ?? [];
+  let [command, params] = parseCommand(message.text) ?? [];
 
   if (command in commands) {
-    return respond(commands[command](params));
+    return respond(await commands[command](params, message));
   } else {
-    if (chat.type == "private") {
+    if (message.chat.type == "private") {
       return respond({
         text: "J'avoue que j'ai rien compris là... Recommence ?",
       });
