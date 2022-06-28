@@ -1,7 +1,7 @@
 import { Command } from "../utils/commands";
 import { parseRoll } from "../utils/parse-dice";
 
-export const rollCommand: Command = (params: string) => {
+export const rollCommand: Command = async (params: string) => {
   let { rolls, modifier, totalBeforeModifiers, total } =
     parseRoll(params) ?? {};
 

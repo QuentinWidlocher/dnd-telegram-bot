@@ -23,6 +23,15 @@
 ### Search for a spell
 
 ```plain
-/spell mot de guérison
+/spell mot
 /s arme
+```
+
+### Manage your grimoire
+
+```plain
+/grimoire add dédale
+/grimoire
+/grimoire use dédale
+/grimoire remove dédale
 ```

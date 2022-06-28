@@ -1,23 +1,28 @@
+export type TelegramRequestMessage = {
+  chat: {
+    id: number;
+    type: "private" | "group" | "supergroup" | "channel";
+  };
+  text: string;
+  from: {
+    id: number;
+    is_bot: boolean;
+    first_name: string;
+    username: string;
+    language_code: "fr";
+    is_premium: boolean;
+  };
+};
+
 export type TelegramRequestBody =
   | {
-      message: {
-        chat: {
-          id: number;
-          type: "private" | "group" | "supergroup" | "channel";
-        };
-        text: string;
-      };
+      message: TelegramRequestMessage;
     }
   | {
       callback_query: {
-        message: {
-          chat: {
-            id: number;
-            type: "private" | "group" | "supergroup" | "channel";
-          };
-          text: string;
-        };
+        message: TelegramRequestMessage;
         data: string;
+        from: TelegramRequestMessage["from"];
       };
     };
 

@@ -1,6 +1,11 @@
-import { Command } from "../utils/commands";
+import {
+  Command,
+  createButtonGrid,
+  createButtonHorizontalList,
+} from "../utils/commands";
 import spells from "../assets/spells.json";
 import { fuzzySearchRegexTemplate } from "../utils/parse-dice";
+import { retreive } from "../utils/storage";
 
 const schools = {
   abjuration: "Abjuration",
@@ -13,7 +18,7 @@ const schools = {
   transmutation: "Transmutation",
 } as const;
 
-export const searchSpellCommand: Command = (params) => {
+export const searchSpellCommand: Command = async (params, message) => {
   if (!params) {
     return {
       text: "Pour chercher un sort, ajouter le nom du sort à la commande. Si le nom est exact, vous aurez sa description",
@@ -35,15 +40,7 @@ export const searchSpellCommand: Command = (params) => {
     const [, id] = /id:([a-z-0-9]*)/.exec(params) ?? [];
     result = spells.filter((s) => s.id == id);
   } else {
-    const fullRegexString = params
-      .split(" ")
-      .map((s) => s.trim())
-      .map(fuzzySearchRegexTemplate)
-      .join("");
-
-    const regex = new RegExp(fullRegexString, "i");
-    console.log("regex", regex);
-    result = spells.filter((s) => (s.name?.match(regex) ?? []).length > 0);
+    result = searchSpellByName(params);
   }
 
   if (result.length > 1) {
@@ -107,8 +104,54 @@ ${spell.higherLevel.replace(/<br>/g, "\n\n")}
     : ""
 }`.trim();
 
-    return { text: resultText };
+    let { spells = [] } = await retreive(message.chat.id);
+
+    if (spells.some((s) => s.id == spell.id)) {
+      return {
+        text: resultText,
+        params: createButtonGrid([
+          [
+            {
+              label: "Retirer du grimoire",
+              command: `/grimoire remove id:${spell.id}`,
+            },
+            {
+              label: "Utiliser le sort",
+              command: `/grimoire use id:${spell.id}`,
+            },
+          ],
+          [
+            {
+              label: "Voir votre grimoire",
+              command: "/grimoire",
+            },
+          ],
+        ]),
+      };
+    } else {
+      return {
+        text: resultText,
+        params: createButtonHorizontalList([
+          {
+            label: "Ajouter au grimoire",
+            command: `/grimoire add id:${spell.id}`,
+          },
+        ]),
+      };
+    }
   } else {
     return { text: `Aucun sort n'a été trouvé pour *${params}*` };
   }
 };
+
+export function searchSpellByName(name: string): Array<typeof spells[number]> {
+  const fullRegexString = name
+    .split(" ")
+    .map((s) => s.trim())
+    .map(fuzzySearchRegexTemplate)
+    .join("");
+
+  const regex = new RegExp(fullRegexString, "i");
+  console.log("regex", regex);
+  return spells.filter((s) => (s.name?.match(regex) ?? []).length > 0) ?? [];
+}

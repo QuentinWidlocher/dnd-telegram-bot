@@ -3,7 +3,7 @@ import { parseRoll, rollParseRegex } from "../utils/parse-dice";
 import chaosEffects from "../assets/chaos-effects.json";
 import { Command } from "../utils/commands";
 
-export const chaosCommand: Command = () => {
+export const chaosCommand: Command = async () => {
   let { total: d100 } = parseRoll("1d100-1") ?? { total: 0 };
 
   // A number between 0 and 50
