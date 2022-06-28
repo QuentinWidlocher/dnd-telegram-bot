@@ -38,7 +38,14 @@ export async function retreive(userId: string | number): Promise<UserData> {
     .then((data) =>
       JSON.parse(
         (data.$response.data as GetItemOutput | undefined)?.Item?.data?.S ??
-          "{}"
+        "{}"
       )
     );
+}
+
+
+export async function update(userId: string | number, map: (data: UserData) => UserData) {
+  let data = await retreive(userId);
+  data = map(data);
+  await store(userId, data);
 }
