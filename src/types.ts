@@ -16,15 +16,15 @@ export type TelegramRequestMessage = {
 
 export type TelegramRequestBody =
   | {
-      message: TelegramRequestMessage;
-    }
+    message: TelegramRequestMessage;
+  }
   | {
-      callback_query: {
-        message: TelegramRequestMessage;
-        data: string;
-        from: TelegramRequestMessage["from"];
-      };
+    callback_query: {
+      message: TelegramRequestMessage;
+      data: string;
+      from: TelegramRequestMessage["from"];
     };
+  };
 
 export type TelegramResponseBody = {
   reply_markup?: {
@@ -34,5 +34,8 @@ export type TelegramResponseBody = {
 
 export type TelegramInlineKeyboardButton = {
   text: string;
-  callback_data: string;
+  callback_data?: string;
+  web_app?: {
+    url: string;
+  }
 };
