@@ -34,5 +34,8 @@ export type TelegramResponseBody = {
 
 export type TelegramInlineKeyboardButton = {
   text: string;
-  callback_data: string;
+  callback_data?: string;
+  web_app?: {
+    url: string;
+  };
 };

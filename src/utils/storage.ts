@@ -42,3 +42,12 @@ export async function retreive(userId: string | number): Promise<UserData> {
       )
     );
 }
+
+export async function update(
+  userId: string | number,
+  map: (data: UserData) => UserData
+) {
+  let data = await retreive(userId);
+  data = map(data);
+  await store(userId, data);
+}

@@ -5,7 +5,7 @@ import {
   createButtonVerticalList,
 } from "../utils/commands";
 import spells from "../assets/spells.json";
-import { retreive, store } from "../utils/storage";
+import { retreive, store, update } from "../utils/storage";
 import { searchSpellByName, searchSpellCommand } from "./search-spell";
 
 export const grimoireCommand: Command = async (params: string, message) => {
@@ -79,6 +79,23 @@ const addToGrimoireCommand: Command = async (params, message) => {
 const removeFromGrimoireCommand: Command = async (params, message) => {
   const [command = "", ...args] = params?.split(" ") ?? [];
 
+  if (args[0] == "all") {
+    await update(message.from.id, (data) => ({
+      ...data,
+      spells: [],
+    }));
+
+    return {
+      text: `Tous les sorts ont été supprimés de votre grimoire`,
+      params: createButtonHorizontalList([
+        {
+          label: "Voir votre grimoire",
+          command: "/grimoire",
+        },
+      ]),
+    };
+  }
+
   let foundSpells = getSpellFromParams(args.join(" "));
 
   if (foundSpells.length > 1) {
@@ -140,6 +157,10 @@ const listGrimoireCommand: Command = async (params, message) => {
         {
           label: "Réinitialiser votre grimoire",
           command: "/grimoire rest",
+        },
+        {
+          label: "Supprimer tous les sorts",
+          command: "/grimoire remove all",
         },
       ],
     ]),
