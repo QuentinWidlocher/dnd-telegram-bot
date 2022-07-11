@@ -1,0 +1,24 @@
+{
+  "name": "dnd-telegram-bot-webapp",
+  "version": "1.0.0",
+  "description": "Vite + Solid + Daisy template for Telegram Webapps",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "autoprefixer": "^10.4.7",
+    "daisyui": "^2.18.1",
+    "hex-to-hsl": "^1.0.2",
+    "postcss": "^8.4.14",
+    "tailwindcss": "^3.0.24",
+    "vite": "^2.9.9",
+    "vite-plugin-solid": "^2.2.6"
+  },
+  "dependencies": {
+    "solid-js": "^1.4.2",
+    "telegram-webapp-solid": "0.2.2"
+  }
+}
