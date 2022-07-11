@@ -5,6 +5,7 @@
   },
   "license": "GPL-3.0-or-later",
   "devDependencies": {
+    "typegram": "^3.10.0",
     "typescript": "^4.6.4"
   }
 }

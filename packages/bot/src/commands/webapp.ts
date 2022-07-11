@@ -10,7 +10,7 @@ export const webAppCommand: Command = async (params, message) => {
             {
               text: "Open web app",
               web_app: {
-                url: "https://magical-florentine-2067c4.netlify.app/",
+                url: "https://dnd-telegram-bot.netlify.app/",
               },
             },
           ],
