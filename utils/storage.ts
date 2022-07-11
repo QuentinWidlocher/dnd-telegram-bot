@@ -3,8 +3,10 @@ import DB, { GetItemOutput } from "aws-sdk/clients/dynamodb";
 const db = new DB({
   region: "us-east-1",
   credentials: {
-    accessKeyId: process.env.ACCESS_KEY_ID!,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY!,
+    // @ts-ignore
+    accessKeyId: process?.env?.ACCESS_KEY_ID ?? import.meta.env.ACCESS_KEY_ID,
+    // @ts-ignore
+    secretAccessKey: process?.env?.SECRET_ACCESS_KEY ?? import.meta.env.SECRET_ACCESS_KEY,
   },
 });
 

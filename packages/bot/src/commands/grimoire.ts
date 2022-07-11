@@ -5,9 +5,9 @@ import {
   createButtonVerticalList,
 } from "../utils/commands";
 import spells from "../assets/spells.json";
-import { retreive, store, update } from "../utils/storage";
 import { searchSpellByName } from "./search-spell";
 import invariant from "tiny-invariant";
+import { retreive, store, update } from "../../../../utils/storage";
 
 export const grimoireCommand: Command = async (params: string, message) => {
   if (message.chat.type != "private") {
