@@ -1,4 +1,4 @@
-import { retreive } from "../../../../utils/storage";
+import { retreive } from "shared";
 import spells from "../assets/spells.json";
 import {
   Command,

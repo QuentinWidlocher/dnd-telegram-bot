@@ -7,5 +7,4 @@
     "esModuleInterop": true,
     "isolatedModules": true,
   },
-  "include": ["./utils/**/*.ts"],
 }

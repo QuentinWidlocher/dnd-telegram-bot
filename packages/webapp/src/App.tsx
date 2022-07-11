@@ -4,7 +4,7 @@ import {
   createUserSignal,
   MainButton,
 } from 'telegram-webapp-solid'
-import { retreive } from '../../../utils/storage'
+import { retreive } from 'shared'
 import { Layout } from './Layout'
 
 const App: Component = () => {

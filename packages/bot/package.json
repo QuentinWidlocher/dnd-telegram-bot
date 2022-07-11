@@ -22,6 +22,7 @@
     "@types/node": "^18.0.0"
   },
   "dependencies": {
-    "tiny-invariant": "^1.2.0"
+    "tiny-invariant": "^1.2.0",
+    "shared": "workspace:*"
   }
 }

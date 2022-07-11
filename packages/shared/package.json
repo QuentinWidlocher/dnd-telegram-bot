@@ -1,0 +1,7 @@
+{
+  "name": "shared",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "aws-sdk": "^2.1163.0"
+  }
+}

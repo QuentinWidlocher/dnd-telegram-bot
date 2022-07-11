@@ -7,7 +7,7 @@ import {
 import spells from "../assets/spells.json";
 import { searchSpellByName } from "./search-spell";
 import invariant from "tiny-invariant";
-import { retreive, store, update } from "../../../../utils/storage";
+import { retreive, store, update } from "shared";
 
 export const grimoireCommand: Command = async (params: string, message) => {
   if (message.chat.type != "private") {
