@@ -1,4 +1,4 @@
-import DB, { AttributeValue, GetItemOutput } from "aws-sdk/clients/dynamodb";
+import DB, { GetItemOutput } from "aws-sdk/clients/dynamodb";
 
 const db = new DB({
   region: "us-east-1",
@@ -38,7 +38,7 @@ export async function retreive(userId: string | number): Promise<UserData> {
     .then((data) =>
       JSON.parse(
         (data.$response.data as GetItemOutput | undefined)?.Item?.data?.S ??
-          "{}"
+        "{}"
       )
     );
 }

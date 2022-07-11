@@ -1,27 +1,29 @@
 import { commands } from "./commands";
-import { TelegramRequestBody, TelegramRequestMessage } from "./types";
 import { ResponseData } from "./utils/commands";
 import { sendToUser } from "./utils/telegram-api";
+import type { Message, Update } from "typegram";
 
 const commandParseRegex = /\/(\w+)\s?(.+)?/;
 
-export async function app(body: TelegramRequestBody) {
+export async function app(body: Update.MessageUpdate | Update.CallbackQueryUpdate) {
   console.log("body", body);
 
   if ("callback_query" in body) {
-    return executeCommand({
-      ...body.callback_query.message,
-      text: body.callback_query.data,
-      from: body.callback_query.from,
-    });
-  } else {
+    if (body.callback_query?.message && "text" in body.callback_query.message) {
+      return executeCommand({
+        ...body.callback_query.message,
+        text: body.callback_query.data ?? '',
+        from: body.callback_query.from,
+      });
+    }
+  } else if ("text" in body.message) {
     return executeCommand(body.message);
   }
 }
 
-async function executeCommand(message: TelegramRequestMessage) {
+async function executeCommand(message: Message.TextMessage) {
   const respond = ({ text = "", params = {} }: ResponseData) =>
-    sendToUser(message.chat.id, text, params);
+    sendToUser({ chat_id: message.chat.id, text, ...params });
 
   let [command, params] = parseCommand(message.text) ?? [];
 

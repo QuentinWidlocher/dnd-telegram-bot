@@ -1,17 +1,13 @@
 import https from "https";
-import { TelegramResponseBody } from "../types";
+import type { TelegramP } from 'typegram';
 
 const token = process.env.TELEGRAM_TOKEN;
 
-export async function sendToUser(
-  chat_id: number,
-  text: string,
-  params: TelegramResponseBody = {}
-) {
+export const sendToUser: TelegramP['sendMessage'] = async ({ chat_id, text, ...params }) => {
   return post({ chat_id, text, ...params });
 }
 
-async function post(data: {}) {
+async function post(data: {}): Promise<ReturnType<TelegramP['sendMessage']>> {
   return new Promise((resolve, reject) => {
     const options = {
       host: "api.telegram.org",
@@ -28,8 +24,8 @@ async function post(data: {}) {
     const req = https.request(options, (res) => {
       res.on("data", function (chunk) {
         console.log("BODY: " + chunk);
+        resolve(JSON.parse(chunk));
       });
-      resolve(JSON.stringify(res.statusCode));
     });
 
     // handle the possible errors

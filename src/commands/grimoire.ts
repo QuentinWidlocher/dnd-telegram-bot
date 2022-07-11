@@ -6,7 +6,8 @@ import {
 } from "../utils/commands";
 import spells from "../assets/spells.json";
 import { retreive, store, update } from "../utils/storage";
-import { searchSpellByName, searchSpellCommand } from "./search-spell";
+import { searchSpellByName } from "./search-spell";
+import invariant from "tiny-invariant";
 
 export const grimoireCommand: Command = async (params: string, message) => {
   if (message.chat.type != "private") {
@@ -31,6 +32,8 @@ export const grimoireCommand: Command = async (params: string, message) => {
 };
 
 const addToGrimoireCommand: Command = async (params, message) => {
+  invariant(message.from);
+
   const [command = "", ...args] = params?.split(" ") ?? [];
 
   let foundSpells = getSpellFromParams(args.join(" "));
@@ -77,6 +80,7 @@ const addToGrimoireCommand: Command = async (params, message) => {
 };
 
 const removeFromGrimoireCommand: Command = async (params, message) => {
+  invariant(message.from);
   const [command = "", ...args] = params?.split(" ") ?? [];
 
   if (args[0] == "all") {
@@ -133,6 +137,7 @@ const removeFromGrimoireCommand: Command = async (params, message) => {
 };
 
 const listGrimoireCommand: Command = async (params, message) => {
+  invariant(message.from);
   const data = await retreive(message.from.id);
   const spells = data.spells;
 
@@ -168,6 +173,7 @@ const listGrimoireCommand: Command = async (params, message) => {
 };
 
 const useSpellCommand: Command = async (params, message) => {
+  invariant(message.from);
   const [command = "", ...args] = params?.split(" ") ?? [];
 
   let foundSpells = getSpellFromParams(args.join(" "));
@@ -214,6 +220,7 @@ const useSpellCommand: Command = async (params, message) => {
 };
 
 const restCommand: Command = async (params, message) => {
+  invariant(message.from);
   let data = await retreive(message.from.id);
   data = {
     ...data,

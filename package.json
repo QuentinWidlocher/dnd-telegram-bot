@@ -7,21 +7,24 @@
   "scripts": {
     "build": "pnpm preconstruct build",
     "deploy": "pnpm build && pnpm zip && pnpm aws-deploy",
-    "zip": "cp dist/dnd-telegram-bot.cjs.prod.js aws/index.js && zip -m -j aws/function.zip aws/index.js",
-    "aws-deploy": "aws lambda update-function-code --function-name DnDTelegramBot --zip-file fileb://aws/function.zip",
+    "zip": "cp dist/dnd-telegram-bot.cjs.prod.js aws/index.js && cd aws && zip -r ../function.zip *",
+    "aws-deploy": "aws lambda update-function-code --function-name DnDTelegramBot --zip-file fileb://function.zip",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.18.6",
     "@babel/preset-env": "^7.18.2",
     "@babel/preset-typescript": "^7.17.12",
     "@preconstruct/cli": "^2.1.5",
     "@types/node": "^18.0.0",
+    "typegram": "^3.10.0",
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "aws-sdk": "^2.1163.0"
+    "aws-sdk": "^2.1163.0",
+    "tiny-invariant": "^1.2.0"
   }
 }

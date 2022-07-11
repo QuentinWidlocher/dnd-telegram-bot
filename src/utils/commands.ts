@@ -1,30 +1,32 @@
-import { TelegramRequestMessage, TelegramResponseBody } from "../types";
+import type { Message, InlineKeyboardMarkup } from "typegram";
 
 export type ResponseData = {
   text: string;
-  params?: TelegramResponseBody;
+  params?: {
+    reply_markup?: InlineKeyboardMarkup
+  };
 };
 
 export type Command = (
   params: string,
-  message: TelegramRequestMessage
+  message: Message.TextMessage
 ) => Promise<ResponseData>;
 
 export function createButtonHorizontalList(
   buttons: { label: string; command: string }[]
-): TelegramResponseBody {
+): ResponseData['params'] {
   return createButtonGrid([buttons]);
 }
 
 export function createButtonVerticalList(
   buttons: { label: string; command: string }[]
-): TelegramResponseBody {
+): ResponseData['params'] {
   return createButtonGrid(buttons.map((b) => [b]));
 }
 
 export function createButtonGrid(
   buttons: { label: string; command: string }[][]
-): TelegramResponseBody {
+): ResponseData['params'] {
   const buttonsList = buttons.map((row, index) => {
     const buttonsRow = row.map((button, index) => ({
       text: button.label,
