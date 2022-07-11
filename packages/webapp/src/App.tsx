@@ -1,35 +1,32 @@
-import { Component, Show } from 'solid-js'
+import { Component } from 'solid-js'
 import {
-  createCloseSignal,
-  createExpandSignal,
+  createInitDataSignal,
   createUserSignal,
-  HapticButton,
   MainButton,
 } from 'telegram-webapp-solid'
 import { Layout } from './Layout'
 
 const App: Component = () => {
-  const [expanded, expand] = createExpandSignal()
-  const close = createCloseSignal()
   const user = createUserSignal()
+  const [data, sendData] = createInitDataSignal()
 
   return (
     <Layout>
       <div class="my-auto flex flex-col">
         <p class="text-center text-hint w-full">
-          Hi {user?.first_name ?? ''}, welcome to the demo app. <br />
+          Hi {user?.first_name ?? ''}, welcome to the demo app.
         </p>
-        <Show when={!expanded()}>
-          <HapticButton
-            class="btn btn-primary btn-outline w-full mt-5"
-            onClick={() => expand()}
-          >
-            Expand the view
-          </HapticButton>
-        </Show>
+        <pre>
+          <code>{JSON.stringify(data(), null, 2)}</code>
+        </pre>
       </div>
 
-      <MainButton text="Close the app" onClick={close} />
+      <MainButton
+        text="Close the app"
+        onClick={() => {
+          sendData(JSON.stringify({ date: new Date() }))
+        }}
+      />
     </Layout>
   )
 }

@@ -19,6 +19,6 @@
   },
   "dependencies": {
     "solid-js": "^1.4.2",
-    "telegram-webapp-solid": "0.2.2"
+    "telegram-webapp-solid": "0.3.1"
   }
 }
