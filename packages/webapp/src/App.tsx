@@ -1,5 +1,6 @@
 import { Spell } from "shared";
-import { Component, createSignal, For } from "solid-js";
+import { createEffect, createSignal, For, Setter, Show } from "solid-js";
+import { createStore } from "solid-js/store";
 import {
   createCloseSignal,
   createInitDataSignal,
@@ -7,72 +8,107 @@ import {
 } from "telegram-webapp-solid";
 import { Layout } from "./Layout";
 
-function createSpellSignal(orignalSpells: Spell[]) {
-  const [spells, setSpells] = createSignal<Spell[]>(orignalSpells);
+function createBooleanTimeoutSignal(timeout: number = 2000) {
+  const [state, setState] = createSignal(false);
+  let timeoutRef;
 
-  function updateSpell(diff: { id: Spell["id"] } & Partial<Spell>) {
-    setSpells((oldSpells) => [
-      ...oldSpells.filter((spell) => spell.id !== diff.id),
-      { ...oldSpells.find((spell) => spell.id === diff.id), ...diff },
-    ]);
-  }
+  createEffect(() => {
+    if (state()) {
+      timeoutRef = setTimeout(() => {
+        setState(false);
+      }, 2000);
+    } else {
+      clearTimeout(timeoutRef);
+    }
+  });
 
-  return [spells, setSpells, updateSpell] as const;
+  return [state, setState] as const;
 }
 
-const App: Component = () => {
+export default function App() {
   const close = createCloseSignal();
   const [initData, sendData] = createInitDataSignal();
-  const [spells, , updateSpell] = createSpellSignal(
+  const [spells, setSpells] = createStore<Spell[]>(
     JSON.parse(
       new URL(window.location.href).searchParams.get("data") ??
-        '[{"name": "Fireball"}]'
-    )
+        '[{"id": "fireball", "name": "Big mega fireball thrown from the eyes", "usage": 0}, {"id": "heal", "name": "Heal", "usage": 1}]'
+    ).sort((a, b) => a.id.localeCompare(b.id))
   );
+  const [confirmRest, setConfirmRest] = createBooleanTimeoutSignal();
 
-  function updateUsage(spell: Spell, diff: number) {
-    updateSpell({
-      id: spell.id,
+  function updateUsage(index: number, diff: number) {
+    setSpells(index, (spell) => ({
+      ...spell,
       usage: Math.max(0, spell.usage + diff),
-    });
+    }));
   }
 
   return (
     <Layout>
       <ul class="my-auto flex flex-col space-y-2">
-        <For each={spells()}>
-          {(spell) => (
+        <For each={spells}>
+          {(spell, i) => (
             <li class="flex w-full space-x-2">
-              <div class="bg-base-200 px-5 flex place-items-center place-content-between rounded-lg text-primary flex-1">
-                <span>{spell.name}</span>
-                <span>{spell.usage}</span>
+              <div class="bg-base-200 px-5 overflow-hidden flex place-items-center place-content-between rounded-lg text-primary flex-1">
+                <span class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
+                  {spell.name}
+                </span>
+                <span class="ml-2 font-bold">{spell.usage}</span>
               </div>
+              <Show when={spell.usage > 0}>
+                <button
+                  class="btn btn-primary-ghost btn-square"
+                  onClick={() => updateUsage(i(), -1)}
+                >
+                  -
+                </button>
+              </Show>
               <button
                 class="btn btn-primary-ghost btn-square"
-                onClick={() => updateUsage(spell, 1)}
+                onClick={() => updateUsage(i(), 1)}
               >
                 +
-              </button>
-              <button
-                class="btn btn-primary-ghost btn-square"
-                onClick={() => updateUsage(spell, -1)}
-              >
-                -
               </button>
             </li>
           )}
         </For>
+        <li class="flex flex-col">
+          <button
+            class="btn mt-5"
+            classList={{
+              "btn-error": confirmRest(),
+              "btn-primary-ghost": !confirmRest(),
+            }}
+            onClick={() => {
+              if (confirmRest()) {
+                setSpells(
+                  spells.map((spell) => ({
+                    ...spell,
+                    usage: 0,
+                  }))
+                );
+                setConfirmRest(false);
+              } else {
+                setConfirmRest(true);
+              }
+            }}
+            disabled={spells.every((s) => s.usage <= 0)}
+          >
+            {confirmRest() ? "Appuyez pour valider" : "Se reposer"}
+          </button>
+          <span class="text-hint text-center w-full mt-2">
+            Un repos remet tous les compteurs à zéro
+          </span>
+        </li>
       </ul>
 
       <MainButton
         text="Close the app"
         onClick={() => {
-          sendData(JSON.stringify(spells()));
+          sendData(JSON.stringify(spells));
           close();
         }}
       />
     </Layout>
   );
-};
-
-export default App;
+}
