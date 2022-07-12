@@ -2,12 +2,13 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var shared = require('shared');
+var DB = require('aws-sdk/clients/dynamodb');
 var invariant = require('tiny-invariant');
 var https = require('https');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { 'default': e }; }
 
+var DB__default = /*#__PURE__*/_interopDefault(DB);
 var invariant__default = /*#__PURE__*/_interopDefault(invariant);
 var https__default = /*#__PURE__*/_interopDefault(https);
 
@@ -8668,6 +8669,42 @@ var spells = [
 	}
 ];
 
+const db = new DB__default["default"]({
+  region: "us-east-1",
+  credentials: {
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY
+  }
+});
+async function store(userId, data) {
+  return db.putItem({
+    TableName: "dnd-telegram-bot-user-data",
+    Item: {
+      userId: {
+        S: String(userId)
+      },
+      data: {
+        S: JSON.stringify(data)
+      }
+    }
+  }).promise();
+}
+async function retreive(userId) {
+  return db.getItem({
+    TableName: "dnd-telegram-bot-user-data",
+    Key: {
+      userId: {
+        S: String(userId)
+      }
+    }
+  }).promise().then(data => JSON.parse(data.$response.data?.Item?.data?.S ?? "{}"));
+}
+async function update(userId, map) {
+  let data = await retreive(userId);
+  data = map(data);
+  await store(userId, data);
+}
+
 const schools = {
   abjuration: "Abjuration",
   conjuration: "Invocation",
@@ -8753,7 +8790,7 @@ ${spell.higherLevel.replace(/<br>/g, "\n\n")}
 ` : ""}`.trim();
     let {
       spells = []
-    } = await shared.retreive(message.chat.id);
+    } = await retreive(message.chat.id);
 
     if (spells.some(s => s.id == spell.id)) {
       return {
@@ -8833,7 +8870,7 @@ const addToGrimoireCommand = async (params, message) => {
   }
 
   let spell = foundSpells[0];
-  let data = await shared.retreive(message.from.id);
+  let data = await retreive(message.from.id);
   data = { ...data,
     spells: [...(data.spells ?? []), {
       id: spell.id,
@@ -8841,7 +8878,7 @@ const addToGrimoireCommand = async (params, message) => {
       usage: 0
     }]
   };
-  await shared.store(message.from.id, data);
+  await store(message.from.id, data);
   return {
     text: `Le sort *${spell.name}* à été ajouté à votre grimoire`,
     params: createButtonHorizontalList([{
@@ -8856,7 +8893,7 @@ const removeFromGrimoireCommand = async (params, message) => {
   const [command = "", ...args] = params?.split(" ") ?? [];
 
   if (args[0] == "all") {
-    await shared.update(message.from.id, data => ({ ...data,
+    await update(message.from.id, data => ({ ...data,
       spells: []
     }));
     return {
@@ -8885,11 +8922,11 @@ const removeFromGrimoireCommand = async (params, message) => {
   }
 
   let spell = foundSpells[0];
-  let data = await shared.retreive(message.from.id);
+  let data = await retreive(message.from.id);
   data = { ...data,
     spells: data.spells?.filter(spell => spell.id != spell.id) ?? []
   };
-  await shared.store(message.from.id, data);
+  await store(message.from.id, data);
   return {
     text: `Le sort *${spell.name}* à été supprimé de votre grimoire`,
     params: createButtonHorizontalList([{
@@ -8901,7 +8938,7 @@ const removeFromGrimoireCommand = async (params, message) => {
 
 const listGrimoireCommand = async (params, message) => {
   invariant__default["default"](message.from);
-  const data = await shared.retreive(message.from.id);
+  const data = await retreive(message.from.id);
   const spells = data.spells;
 
   if (spells.length == 0) {
@@ -8948,7 +8985,7 @@ const useSpellCommand = async (params, message) => {
   }
 
   let spell = foundSpells[0];
-  let data = await shared.retreive(message.from.id);
+  let data = await retreive(message.from.id);
   let previousUsage = data.spells?.find(s => s.id == spell.id)?.usage ?? 0;
   data = { ...data,
     spells: data.spells?.map(spell => {
@@ -8959,7 +8996,7 @@ const useSpellCommand = async (params, message) => {
       return spell;
     }) ?? []
   };
-  await shared.store(message.from.id, data);
+  await store(message.from.id, data);
   return {
     text: `Le sort *${spell.name}* à été utilisé ${previousUsage + 1} fois`,
     params: createButtonHorizontalList([{
@@ -8971,13 +9008,13 @@ const useSpellCommand = async (params, message) => {
 
 const restCommand = async (params, message) => {
   invariant__default["default"](message.from);
-  let data = await shared.retreive(message.from.id);
+  let data = await retreive(message.from.id);
   data = { ...data,
     spells: data.spells?.map(spell => ({ ...spell,
       usage: 0
     })) ?? []
   };
-  await shared.store(message.from.id, data);
+  await store(message.from.id, data);
   return {
     text: `Votre grimoire a été réinitialisé`,
     params: createButtonHorizontalList([{
@@ -8999,7 +9036,7 @@ function getSpellFromParams(params) {
 
 const webAppCommand = async (params, message) => {
   invariant__default["default"](message.from);
-  const data = await shared.retreive(message.from.id);
+  const data = await retreive(message.from.id);
   const spells = data.spells;
   const searchParams = new URLSearchParams();
   searchParams.append("data", JSON.stringify(spells));

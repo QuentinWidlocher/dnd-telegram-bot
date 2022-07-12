@@ -3,10 +3,8 @@ import DB, { GetItemOutput } from "aws-sdk/clients/dynamodb";
 const db = new DB({
   region: "us-east-1",
   credentials: {
-    // @ts-ignore
-    accessKeyId: process?.env?.ACCESS_KEY_ID ?? import.meta.env.ACCESS_KEY_ID,
-    // @ts-ignore
-    secretAccessKey: process?.env?.SECRET_ACCESS_KEY ?? import.meta.env.SECRET_ACCESS_KEY,
+    accessKeyId: process.env.ACCESS_KEY_ID!,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY!,
   },
 });
 
@@ -40,7 +38,7 @@ export async function retreive(userId: string | number): Promise<UserData> {
     .then((data) =>
       JSON.parse(
         (data.$response.data as GetItemOutput | undefined)?.Item?.data?.S ??
-        "{}"
+          "{}"
       )
     );
 }

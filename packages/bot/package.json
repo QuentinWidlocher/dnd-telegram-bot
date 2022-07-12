@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "tiny-invariant": "^1.2.0",
+    "aws-sdk": "^2.1163.0",
     "shared": "workspace:*"
   }
 }

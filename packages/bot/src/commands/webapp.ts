@@ -1,4 +1,4 @@
-import { retreive } from "shared";
+import { retreive } from "../utils/storage";
 import invariant from "tiny-invariant";
 import { Command } from "../utils/commands";
 

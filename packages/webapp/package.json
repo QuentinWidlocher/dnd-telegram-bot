@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "solid-js": "^1.4.2",
-    "telegram-webapp-solid": "0.3.1"
+    "telegram-webapp-solid": "0.3.1",
+    "shared": "workspace:*"
   }
 }

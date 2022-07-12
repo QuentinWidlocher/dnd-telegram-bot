@@ -21,3 +21,7 @@ body {
 .btn {
   @apply normal-case;
 }
+
+.btn.btn-primary-ghost {
+  @apply btn-primary text-primary border-none hover:text-primary-content bg-opacity-20;
+}

@@ -1,12 +1,13 @@
-import { retreive } from "shared";
+import { retreive } from "../utils/storage";
 import spells from "../assets/spells.json";
 import {
   Command,
   createButtonGrid,
-  createButtonHorizontalList
+  createButtonHorizontalList,
 } from "../utils/commands";
 import { fuzzySearchRegexTemplate } from "../utils/parse-dice";
 import type { InlineKeyboardButton } from "typegram";
+import { Spell } from "shared";
 
 const schools = {
   abjuration: "Abjuration",
@@ -26,7 +27,7 @@ export const searchSpellCommand: Command = async (params, message) => {
     };
   }
 
-  let result: Array<typeof spells[number]> = [];
+  let result: Spell[] = [];
 
   let page = 0;
   let spellsPerPage = 10;
@@ -70,10 +71,11 @@ export const searchSpellCommand: Command = async (params, message) => {
     }
 
     return {
-      text: `Résultat de la recherche pour : *${params}*${result.length > spellsPerPage
-        ? `\nPage ${page + 1}/${Math.ceil(result.length / spellsPerPage)}`
-        : ""
-        }`,
+      text: `Résultat de la recherche pour : *${params}*${
+        result.length > spellsPerPage
+          ? `\nPage ${page + 1}/${Math.ceil(result.length / spellsPerPage)}`
+          : ""
+      }`,
       params: {
         reply_markup: {
           inline_keyboard: [...buttons.map((b) => [b]), pageButtons],
@@ -83,8 +85,9 @@ export const searchSpellCommand: Command = async (params, message) => {
   } else if (result.length > 0) {
     const [spell] = result;
     let resultText = `
-*${spell.name} (${spell.isRitual ? "Rituel de " : ""}${schools[spell.school as keyof typeof schools]
-      })*
+*${spell.name} (${spell.isRitual ? "Rituel de " : ""}${
+      schools[spell.school as keyof typeof schools]
+    })*
 Sort de niveau ${spell.level}
 
 *Durée d'incantation :* ${spell.castingTime}
@@ -93,14 +96,15 @@ Sort de niveau ${spell.level}
 *Composantes :* ${spell.components}
 
 ${spell.description.replace(/<br>/g, "\n\n")}
-${spell.higherLevel != undefined
-        ? `
+${
+  spell.higherLevel != undefined
+    ? `
 
 *Au niveau supérieur :*
 ${spell.higherLevel.replace(/<br>/g, "\n\n")}
 `
-        : ""
-      }`.trim();
+    : ""
+}`.trim();
 
     let { spells = [] } = await retreive(message.chat.id);
 
@@ -142,7 +146,7 @@ ${spell.higherLevel.replace(/<br>/g, "\n\n")}
   }
 };
 
-export function searchSpellByName(name: string): Array<typeof spells[number]> {
+export function searchSpellByName(name: string): Spell[] {
   const fullRegexString = name
     .split(" ")
     .map((s) => s.trim())
