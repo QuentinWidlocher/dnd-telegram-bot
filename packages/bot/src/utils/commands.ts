@@ -1,9 +1,13 @@
-import type { Message, InlineKeyboardMarkup } from "typegram";
+import type {
+  Message,
+  InlineKeyboardMarkup,
+  ReplyKeyboardMarkup,
+} from "typegram";
 
 export type ResponseData = {
   text: string;
   params?: {
-    reply_markup?: InlineKeyboardMarkup
+    reply_markup?: InlineKeyboardMarkup | ReplyKeyboardMarkup;
   };
 };
 
@@ -14,19 +18,19 @@ export type Command = (
 
 export function createButtonHorizontalList(
   buttons: { label: string; command: string }[]
-): ResponseData['params'] {
+): ResponseData["params"] {
   return createButtonGrid([buttons]);
 }
 
 export function createButtonVerticalList(
   buttons: { label: string; command: string }[]
-): ResponseData['params'] {
+): ResponseData["params"] {
   return createButtonGrid(buttons.map((b) => [b]));
 }
 
 export function createButtonGrid(
   buttons: { label: string; command: string }[][]
-): ResponseData['params'] {
+): ResponseData["params"] {
   const buttonsList = buttons.map((row, index) => {
     const buttonsRow = row.map((button, index) => ({
       text: button.label,

@@ -12,10 +12,10 @@ export const webAppCommand: Command = async (params, message) => {
   searchParams.append("data", JSON.stringify(spells));
 
   return {
-    text: "Here, open the webapp",
+    text: "Appuyez sur le bouton pour ouvrir votre grimoire++",
     params: {
       reply_markup: {
-        inline_keyboard: [
+        keyboard: [
           [
             {
               text: "Open web app",

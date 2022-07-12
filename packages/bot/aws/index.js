@@ -2,14 +2,14 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var DB = require('aws-sdk/clients/dynamodb');
 var invariant = require('tiny-invariant');
+var DB = require('aws-sdk/clients/dynamodb');
 var https = require('https');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { 'default': e }; }
 
-var DB__default = /*#__PURE__*/_interopDefault(DB);
 var invariant__default = /*#__PURE__*/_interopDefault(invariant);
+var DB__default = /*#__PURE__*/_interopDefault(DB);
 var https__default = /*#__PURE__*/_interopDefault(https);
 
 const rollParseRegex = /(\d+)?[dD](\d+)([\+\-]\d+)?/;
@@ -9041,10 +9041,10 @@ const webAppCommand = async (params, message) => {
   const searchParams = new URLSearchParams();
   searchParams.append("data", JSON.stringify(spells));
   return {
-    text: "Here, open the webapp",
+    text: "Appuyez sur le bouton pour ouvrir votre grimoire++",
     params: {
       reply_markup: {
-        inline_keyboard: [[{
+        keyboard: [[{
           text: "Open web app",
           web_app: {
             url: `https://dnd-telegram-bot.netlify.app/?${searchParams.toString()}`
@@ -9117,7 +9117,7 @@ async function app(body) {
   if ("callback_query" in body) {
     if (body.callback_query?.message && "text" in body.callback_query.message) {
       return executeCommand({ ...body.callback_query.message,
-        text: body.callback_query.data ?? '',
+        text: body.callback_query.data ?? "",
         from: body.callback_query.from
       });
     }
@@ -9162,22 +9162,50 @@ function parseCommand(message) {
   }
 }
 
-async function handler(event) {
+const handler = async (event, context) => {
   console.log("event", event);
 
-  try {
-    await app(JSON.parse(event.body));
-    return {
-      statusCode: 200,
-      body: JSON.stringify(event)
-    };
-  } catch (e) {
-    console.error(e);
-    return {
-      statusCode: 200,
-      body: JSON.stringify(e)
-    };
+  switch (event.rawPath) {
+    case "/default/DnDTelegramBot":
+      try {
+        await app(JSON.parse(event.body ?? "{}"));
+        return {
+          statusCode: 200,
+          body: JSON.stringify(event)
+        };
+      } catch (e) {
+        console.error(e);
+        return {
+          statusCode: 200,
+          body: JSON.stringify(e)
+        };
+      }
+
+    case "/default/get-spells":
+      var userId = event.queryStringParameters?.["user-id"];
+      invariant__default["default"](userId, "userId is required");
+      return {
+        statusCode: 200,
+        body: JSON.stringify(await retreive(userId))
+      };
+
+    case "/default/save-spells":
+      var userId = event.queryStringParameters?.["user-id"];
+      invariant__default["default"](userId, "userId is required");
+      var data = JSON.parse(event.body ?? "{}");
+      invariant__default["default"](data, "data is required");
+      await store(userId, data);
+      return {
+        statusCode: 200,
+        body: ""
+      };
+
+    default:
+      return {
+        statusCode: 404,
+        body: ""
+      };
   }
-}
+};
 
 exports.handler = handler;

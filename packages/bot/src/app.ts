@@ -5,14 +5,16 @@ import type { Message, Update } from "typegram";
 
 const commandParseRegex = /\/(\w+)\s?(.+)?/;
 
-export async function app(body: Update.MessageUpdate | Update.CallbackQueryUpdate) {
+export async function app(
+  body: Update.MessageUpdate | Update.CallbackQueryUpdate
+) {
   console.log("body", body);
 
   if ("callback_query" in body) {
     if (body.callback_query?.message && "text" in body.callback_query.message) {
       return executeCommand({
         ...body.callback_query.message,
-        text: body.callback_query.data ?? '',
+        text: body.callback_query.data ?? "",
         from: body.callback_query.from,
       });
     }
