@@ -3,7 +3,7 @@
   "compilerOptions": {
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "types": ["vite/client", "telegram-webapp-solid"],
+    "types": ["vite/client", "node"],
     "noEmit": true,
   }
 }

@@ -23,6 +23,6 @@
   },
   "dependencies": {
     "tiny-invariant": "^1.2.0",
-    "shared": "workspace:*"
+    "shared": "*"
   }
 }

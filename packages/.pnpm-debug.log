@@ -1,0 +1,20 @@
+{
+  "0 debug pnpm:scope": {
+    "selected": 1,
+    "workspacePrefix": "/mnt/809EB2A59EB292E0/Perso/Javascript/dnd-telegram-bot"
+  },
+  "1 error pnpm": {
+    "errno": 1,
+    "code": "ELIFECYCLE",
+    "pkgid": "dnd-telegram-bot-monorepo@",
+    "stage": "build",
+    "script": "pnpm --filter=./shared run build && pnpm -r --filter=./packages/* run build",
+    "pkgname": "dnd-telegram-bot-monorepo",
+    "err": {
+      "name": "pnpm",
+      "message": "dnd-telegram-bot-monorepo@ build: `pnpm --filter=./shared run build && pnpm -r --filter=./packages/* run build`\nExit status 1",
+      "code": "ELIFECYCLE",
+      "stack": "pnpm: dnd-telegram-bot-monorepo@ build: `pnpm --filter=./shared run build && pnpm -r --filter=./packages/* run build`\nExit status 1\n    at EventEmitter.<anonymous> (/home/quentin/.node/corepack/pnpm/7.5.0/dist/pnpm.cjs:108610:20)\n    at EventEmitter.emit (node:events:527:28)\n    at ChildProcess.<anonymous> (/home/quentin/.node/corepack/pnpm/7.5.0/dist/pnpm.cjs:95176:18)\n    at ChildProcess.emit (node:events:527:28)\n    at maybeClose (node:internal/child_process:1090:16)\n    at ChildProcess._handle.onexit (node:internal/child_process:302:5)"
+    }
+  }
+}
