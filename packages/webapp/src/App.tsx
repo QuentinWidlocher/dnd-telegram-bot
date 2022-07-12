@@ -1,19 +1,17 @@
-import { Component, createResource, Match, Switch } from "solid-js";
+import { Component, createResource, Match, Show, Switch } from "solid-js";
 import {
   createInitDataSignal,
   createUserSignal,
   MainButton,
 } from "telegram-webapp-solid";
-import { retreive } from "shared";
 import { Layout } from "./Layout";
 
 const App: Component = () => {
   const user = createUserSignal();
   const [initData, sendData] = createInitDataSignal();
-
-  const [data] = createResource(() => {
-    return retreive(user?.id);
-  });
+  const data = JSON.parse(
+    new URL(window.location.href).searchParams.get("data") ?? "{}"
+  );
 
   return (
     <Layout>
@@ -21,25 +19,22 @@ const App: Component = () => {
         <p class="text-center text-hint w-full">
           Hi {user?.first_name ?? ""}, welcome to the demo app. <br />
         </p>
-        <Switch>
-          <Match when={data.loading}>
-            <span class="text-center text-hint w-full">Loading your data</span>
-          </Match>
-          <Match when={data.error}>
-            <span class="text-center text-error w-full">
-              Error loading your data
-            </span>{" "}
-            <br />
-            <pre class="text-error mx-auto">
-              <code>{JSON.stringify(data.error, null, 2)}</code>
-            </pre>
-          </Match>
-          <Match when={data()}>
+        <div tabindex="0" class="collapse">
+          <div class="collapse-title font-mono">initData</div>
+          <div class="collapse-content">
             <pre class="text-hint mx-auto">
-              <code>{JSON.stringify(data(), null, 2)}</code>
+              <code>{JSON.stringify(initData(), null, 2)}</code>
             </pre>
-          </Match>
-        </Switch>
+          </div>
+        </div>
+        <div tabindex="0" class="collapse">
+          <div class="collapse-title font-mono">data</div>
+          <div class="collapse-content">
+            <pre class="text-hint mx-auto">
+              <code>{JSON.stringify(data, null, 2)}</code>
+            </pre>
+          </div>
+        </div>
       </div>
 
       <MainButton
