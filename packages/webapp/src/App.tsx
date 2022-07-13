@@ -1,10 +1,4 @@
-import {
-  createEffect,
-  createRenderEffect,
-  createResource,
-  Match,
-  Switch,
-} from "solid-js";
+import { createResource, Match, Switch } from "solid-js";
 import { createCloseSignal, createUserSignal } from "telegram-webapp-solid";
 import { Grimoire } from "./Grimoire";
 import { Layout } from "./Layout";
@@ -19,28 +13,7 @@ export function App() {
     );
     url.searchParams.set("user-id", String(user.id));
 
-    console.log(
-      "🚀 ~ file: App.tsx ~ line 15 ~ const[fetchedSpells]=createResource ~ url",
-      url
-    );
-
-    return fetch(url)
-      .then((res) => res.json())
-      .then((r) => {
-        console.log("🚀 ~ file: App.tsx ~ line 22 ~ returnfetch ~ r", r);
-        return r;
-      });
-  });
-
-  createEffect(() => {
-    console.log(
-      "🚀 ~ file: App.tsx ~ line 28 ~ createEffect ~ fetchedSpells",
-      fetchedSpells()
-    );
-    console.log(
-      "🚀 ~ file: App.tsx ~ line 31 ~ createEffect ~ fetchedSpells",
-      fetchedSpells
-    );
+    return fetch(url).then((res) => res.json());
   });
 
   return (
@@ -68,12 +41,12 @@ export function App() {
           />
         }
       >
-        <Match when={fetchedSpells.loading}>
+        <Match when={fetchedSpells.loading && !fetchedSpells()}>
           <span class="my-auto text-center text-hint w-full">
             Chargement du grimoire...
           </span>
         </Match>
-        <Match when={fetchedSpells.error}>
+        <Match when={fetchedSpells.error && !fetchedSpells()}>
           <span class="my-auto text-center text-error w-full">
             Erreur lors du chargement du grimoire
           </span>
