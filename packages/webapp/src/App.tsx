@@ -13,25 +13,23 @@ export function App() {
       <Suspense
         fallback={
           <Layout>
-            <span class="my-auto w-full text-center-text-hint">
+            <span class="my-auto w-full text-center text-hint">
               Chargement...
             </span>
           </Layout>
         }
       >
         <Routes>
-          <Route
-            path="/grimoire"
-            component={GrimoireRoute}
-            data={grimoireRouteLoader}
-          />
-          <Route
-            path="/spell/:id"
-            component={SpellRoute}
-            data={spellRouteLoader}
-          />
-          <Route path="/">
-            <Navigate href={'/grimoire'} />
+          <Route path="/" data={grimoireRouteLoader}>
+            <Route path="/grimoire" component={GrimoireRoute} />
+            <Route
+              path="/spell/:id"
+              component={SpellRoute}
+              data={spellRouteLoader}
+            />
+            <Route path="/">
+              <Navigate href={'/grimoire'} />
+            </Route>
           </Route>
         </Routes>
       </Suspense>

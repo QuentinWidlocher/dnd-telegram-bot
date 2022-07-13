@@ -1,13 +1,16 @@
 import { SpellInGrimoire } from 'shared'
 import { useRouteData } from 'solid-app-router'
 import { Resource, Show } from 'solid-js'
-import { createUserSignal } from 'telegram-webapp-solid'
+import { createCloseSignal, createUserSignal } from 'telegram-webapp-solid'
 import { Grimoire } from '../components/Grimoire'
 import { Layout } from '../components/Layout'
+import { createDatabaseSignal } from '../utils/database-signal'
 
 export default function GrimoireRoute() {
-  const user = createUserSignal()
+  const database = createDatabaseSignal()
+  const close = createCloseSignal()
   const spells = useRouteData<Resource<SpellInGrimoire[]>>()
+  console.log('Grimoire routeData', spells)
 
   return (
     <Show when={!spells.loading && !spells.error}>
@@ -15,19 +18,7 @@ export default function GrimoireRoute() {
         <Grimoire
           spells={spells()}
           onSaveClick={async (spells) => {
-            let url = new URL(
-              `https://dnd-telegram-bot.netlify.app/.netlify/functions/save-spells`,
-            )
-            url.searchParams.set('user-id', String(user().id))
-
-            await fetch(url, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(spells),
-            })
-
+            await database.saveSpells(spells)
             close()
           }}
         />

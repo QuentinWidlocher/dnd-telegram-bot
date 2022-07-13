@@ -25,3 +25,7 @@ body {
 .btn.btn-primary-ghost {
   @apply btn-primary text-primary border-none hover:text-primary-content bg-opacity-20;
 }
+
+.btn.btn-error-ghost {
+  @apply btn-error text-error border-none hover:text-error-content bg-opacity-20;
+}

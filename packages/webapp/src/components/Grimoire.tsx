@@ -43,16 +43,16 @@ export function Grimoire(props: GrimoireProps) {
         <For each={spells}>
           {(spell, i) => (
             <li class="flex w-full space-x-2">
-              <div class="bg-base-100 px-5 overflow-hidden flex place-items-center place-content-between rounded-lg text-primary flex-1">
-                <Link
-                  onClick={() => mainButton.setVisible(false)}
-                  href={`/spell/${spell.id}`}
-                  class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap"
-                >
+              <Link
+                onClick={() => mainButton.setVisible(false)}
+                href={`/spell/${spell.id}`}
+                class="bg-base-100 focus:bg-primary focus:bg-opacity-20 hover:bg-base-200 hover:text-primary-focus px-5 overflow-hidden flex place-items-center place-content-between rounded-lg text-primary flex-1"
+              >
+                <span class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
                   {spell.name}
-                </Link>
+                </span>
                 <span class="ml-2 font-bold">{spell.usage}</span>
-              </div>
+              </Link>
               <button
                 class="btn btn-primary-ghost btn-square"
                 onClick={() => updateUsage(i(), -1)}
