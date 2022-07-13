@@ -42,12 +42,12 @@ export function App() {
         }
       >
         <Match when={fetchedSpells.loading}>
-          <span class="text-center text-hint w-full">
+          <span class="my-auto text-center text-hint w-full">
             Chargement du grimoire...
           </span>
         </Match>
         <Match when={fetchedSpells.error}>
-          <span class="text-center text-error w-full">
+          <span class="my-auto text-center text-error w-full">
             Erreur lors du chargement du grimoire
           </span>
         </Match>
