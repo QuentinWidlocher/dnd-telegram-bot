@@ -9,8 +9,5 @@
     "pnpm": "^7.5.1",
     "typegram": "^3.10.0",
     "typescript": "^4.7.4"
-  },
-  "dependencies": {
-    "aws-sdk": "^2.1172.0"
   }
 }
