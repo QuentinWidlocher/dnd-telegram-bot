@@ -20,7 +20,7 @@ export default function SpellRoute() {
   const [grimoire, setGrimoire] = createSignal(data.grimoire())
 
   const spellIsAlreadyInGrimoire = () =>
-    grimoire().some((spell) => spell.id == data.spell.id)
+    grimoire()?.some((spell) => spell.id == data.spell.id)
 
   const database = createDatabaseSignal()
 
@@ -116,16 +116,18 @@ export default function SpellRoute() {
             when={spellIsAlreadyInGrimoire()}
             fallback={
               <button
-                class="btn btn-primary w-full"
+                class="btn btn-primary w-full mt-2"
                 onClick={() => addToGrimoire()}
+                disabled={data.grimoire.loading}
               >
                 Ajouter au grimoire
               </button>
             }
           >
             <button
-              class="btn btn-error-ghost w-full"
+              class="btn btn-error-ghost w-full mt-2"
               onClick={() => removeFromGrimoire()}
+              disabled={data.grimoire.loading}
             >
               Retirer du grimoire
             </button>
