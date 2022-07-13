@@ -42,7 +42,7 @@ importers:
       shared: link:../../shared
       solid-app-router: 0.4.1_solid-js@1.4.7
       solid-js: 1.4.7
-      telegram-webapp-solid: 0.3.1
+      telegram-webapp-solid: link:../../../../Solid/telegram-webapp-lib
     devDependencies:
       autoprefixer: 10.4.7_postcss@8.4.14
       daisyui: 2.19.0_ugi4xkrfysqkt4c4y6hkyfj344
@@ -3180,12 +3180,6 @@ packages:
     transitivePeerDependencies:
       - ts-node
     dev: true
-
-  /telegram-webapp-solid/0.3.1:
-    resolution: {integrity: sha512-WNw3wXvB5wjkQBKOLQSjP19y3PqGxPGvCil+ZOqzv+k1oPWYKtRldZsXzTqacjrGZer+TW7SEaPDLFv9GeYIaA==}
-    dependencies:
-      solid-js: 1.4.7
-    dev: false
 
   /terser/5.14.1:
     resolution: {integrity: sha512-+ahUAE+iheqBTDxXhTisdA8hgvbEG1hHOQ9xmNjeUJSoi6DU/gMrKNcfZjHkyY6Alnuyc+ikYJaxxfHkT3+WuQ==}

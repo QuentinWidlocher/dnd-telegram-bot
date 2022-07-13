@@ -1,17 +1,24 @@
-import { Spell, spells, schoolsNames } from "shared";
-import { RouteDataFunc, useNavigate, useRouteData } from "solid-app-router";
-import { BackButton } from "telegram-webapp-solid";
-import { Layout } from "../Layout";
+import { Spell, spells, schoolsNames } from 'shared'
+import { RouteDataFunc, useNavigate, useRouteData } from 'solid-app-router'
+import { createBackButtonSignal } from 'telegram-webapp-solid'
+import { Layout } from '../components/Layout'
 
 export const spellRouteLoader: RouteDataFunc<Promise<Spell>> = async ({
   params,
 }) => {
-  return spells.find((spell) => spell.id === params.spellId);
-};
+  return spells.find((spell) => spell.id === params.spellId)
+}
 
 export default function SpellRoute() {
-  const spell = useRouteData<Spell>();
-  const navigate = useNavigate();
+  const spell = useRouteData<Spell>()
+  const navigate = useNavigate()
+  const backButton = createBackButtonSignal({
+    show: true,
+    onClick: () => {
+      backButton.setVisible(false)
+      navigate(-1)
+    },
+  })
 
   return (
     <>
@@ -24,7 +31,7 @@ export default function SpellRoute() {
             <h1 class="font-bold text-xl my-0 text-primary">{spell.name}</h1>
             <h2 class="text-primary">
               {schoolsNames[spell.school]}
-              {spell.isRitual ? ` (Rituel)` : ""}
+              {spell.isRitual ? ` (Rituel)` : ''}
             </h2>
           </div>
           <ul class="text-left my-5 w-full lg:w-2/3">
@@ -67,11 +74,6 @@ export default function SpellRoute() {
           ></p>
         </div>
       </Layout>
-      <BackButton
-        onClick={() => {
-          navigate(-1);
-        }}
-      />
     </>
-  );
+  )
 }

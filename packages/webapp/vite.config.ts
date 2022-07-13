@@ -7,4 +7,7 @@ export default defineConfig({
     target: 'esnext',
     polyfillDynamicImport: false,
   },
+  optimizeDeps: {
+    exclude: ['telegram-webapp-solid']
+  }
 });

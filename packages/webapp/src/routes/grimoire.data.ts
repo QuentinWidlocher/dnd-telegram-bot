@@ -3,9 +3,9 @@ import { RouteDataFunc } from "solid-app-router";
 import { createResource } from "solid-js";
 import { createUserSignal } from "telegram-webapp-solid";
 
-export const grimoireRouteLoader: RouteDataFunc = ({}) => {
+export const grimoireRouteLoader: RouteDataFunc = ({ }) => {
   const user = createUserSignal();
-  const userId = import.meta.env.PROD ? String(user.id) : "260800881";
+  const userId = import.meta.env.PROD ? String(user().id) : "260800881";
 
   let url = new URL(
     `https://dnd-telegram-bot.netlify.app/.netlify/functions/get-spells`

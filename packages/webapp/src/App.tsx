@@ -1,11 +1,11 @@
-import { Navigate, Outlet, Route, Router, Routes } from "solid-app-router";
-import { lazy, Suspense } from "solid-js";
-import { Layout } from "./Layout";
-import GrimoireRoute from "./routes/grimoire.route";
-import { grimoireRouteLoader } from "./routes/grimoire.data";
-import { spellRouteLoader } from "./routes/spell.data";
+import { Navigate, Route, Router, Routes } from 'solid-app-router'
+import { lazy, Suspense } from 'solid-js'
+import { Layout } from './components/Layout'
+import { grimoireRouteLoader } from './routes/grimoire.data'
+import { spellRouteLoader } from './routes/spell.data'
 
-const SpellRoute = lazy(() => import("./routes/spell.route"));
+const GrimoireRoute = lazy(() => import('./routes/grimoire.route'))
+const SpellRoute = lazy(() => import('./routes/spell.route'))
 
 export function App() {
   return (
@@ -31,10 +31,10 @@ export function App() {
             data={spellRouteLoader}
           />
           <Route path="/">
-            <Navigate href={"/grimoire"} />
+            <Navigate href={'/grimoire'} />
           </Route>
         </Routes>
       </Suspense>
     </Router>
-  );
+  )
 }
