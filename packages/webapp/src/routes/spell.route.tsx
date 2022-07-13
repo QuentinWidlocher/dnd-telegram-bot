@@ -1,6 +1,6 @@
 import { Spell, spells, schoolsNames, SpellInGrimoire } from 'shared'
 import { RouteDataFunc, useNavigate, useRouteData } from 'solid-app-router'
-import { createSignal, Show } from 'solid-js'
+import { createSignal, Resource, Show } from 'solid-js'
 import { createBackButtonSignal } from 'telegram-webapp-solid'
 import { Layout } from '../components/Layout'
 import { createDatabaseSignal } from '../utils/database-signal'
@@ -14,13 +14,13 @@ export const spellRouteLoader: RouteDataFunc<Promise<Spell>> = async ({
 export default function SpellRoute() {
   const data = useRouteData<{
     spell: Spell
-    grimoire: SpellInGrimoire[]
+    grimoire: Resource<SpellInGrimoire[]>
   }>()
+
+  const [grimoire, setGrimoire] = createSignal(data.grimoire())
 
   const spellIsAlreadyInGrimoire = () =>
     grimoire().some((spell) => spell.id == data.spell.id)
-
-  const [grimoire, setGrimoire] = createSignal(data.grimoire)
 
   const database = createDatabaseSignal()
 
