@@ -11,6 +11,8 @@ export type GrimoireProps = {
 };
 
 export function Grimoire(props: GrimoireProps) {
+  console.log("Grimoire props", props);
+
   const [spells, setSpells] = createStore<Spell[]>(props.spells);
   const [confirmRest, setConfirmRest] = createBooleanTimeoutSignal();
 
