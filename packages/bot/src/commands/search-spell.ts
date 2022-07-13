@@ -1,24 +1,11 @@
 import { retreive } from "../utils/storage";
-import spells from "../assets/spells.json";
 import {
   Command,
   createButtonGrid,
   createButtonHorizontalList,
 } from "../utils/commands";
-import { fuzzySearchRegexTemplate } from "../utils/parse-dice";
 import type { InlineKeyboardButton } from "typegram";
-import { Spell } from "shared";
-
-const schools = {
-  abjuration: "Abjuration",
-  conjuration: "Invocation",
-  divination: "Divination",
-  enchantment: "Enchantement",
-  evocation: "Évocation",
-  illusion: "Illusion",
-  necromancy: "Nécromancie",
-  transmutation: "Transmutation",
-} as const;
+import { searchSpellByName, Spell, spells } from "shared";
 
 export const searchSpellCommand: Command = async (params, message) => {
   if (!params) {
@@ -145,15 +132,3 @@ ${spell.higherLevel.replace(/<br>/g, "\n\n")}
     return { text: `Aucun sort n'a été trouvé pour *${params}*` };
   }
 };
-
-export function searchSpellByName(name: string): Spell[] {
-  const fullRegexString = name
-    .split(" ")
-    .map((s) => s.trim())
-    .map(fuzzySearchRegexTemplate)
-    .join("");
-
-  const regex = new RegExp(fullRegexString, "i");
-  console.log("regex", regex);
-  return spells.filter((s) => (s.name?.match(regex) ?? []).length > 0) ?? [];
-}

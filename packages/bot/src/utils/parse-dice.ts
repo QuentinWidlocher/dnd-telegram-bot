@@ -39,10 +39,6 @@ export function parseRoll(roll: string) {
   }
 }
 
-export function fuzzySearchRegexTemplate(word: string) {
-  return `(?=[a-z\u00E0-\u00FC]*${word}[a-z\u00E0-\u00FC]*)`;
-}
-
 function getRandom(max: number) {
   return Math.floor(Math.random() * max + 1);
 }

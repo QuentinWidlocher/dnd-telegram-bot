@@ -1,6 +1,6 @@
 import { parseRoll, rollParseRegex } from "../utils/parse-dice";
-import chaosEffects from "../assets/chaos-effects.json";
 import { Command, ResponseData } from "../utils/commands";
+import { chaosEffects } from "shared";
 
 export const chaosCommand: Command = async () => {
   let { total: d100 } = parseRoll("1d100-1") ?? { total: 0 };
@@ -12,7 +12,7 @@ export const chaosCommand: Command = async () => {
 
   let contextRollParsed = rollParseRegex.exec(effect);
 
-  let responseParams: ResponseData['params'] = {};
+  let responseParams: ResponseData["params"] = {};
 
   if (contextRollParsed) {
     let [rollToParse] = contextRollParsed;

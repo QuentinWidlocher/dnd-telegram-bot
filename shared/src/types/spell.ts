@@ -4,7 +4,15 @@ export type Spell = {
   castedBy: string[];
   id: string;
   level: number;
-  school: string;
+  school:
+    | "abjuration"
+    | "conjuration"
+    | "divination"
+    | "enchantment"
+    | "evocation"
+    | "illusion"
+    | "necromancy"
+    | "transmutation";
   isRitual: boolean;
   castingTime: string;
   range: string;
@@ -12,5 +20,6 @@ export type Spell = {
   duration: string;
   description: string;
   higherLevel?: string;
-  usage?: number;
 };
+
+export type SpellInGrimoire = Pick<Spell, "name" | "id"> & { usage: number };

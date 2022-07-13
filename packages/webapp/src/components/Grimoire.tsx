@@ -1,18 +1,20 @@
-import { Spell } from "shared";
+import { SpellInGrimoire } from "shared";
+import { Link } from "solid-app-router";
 import { For, Show } from "solid-js";
 import { createStore } from "solid-js/store";
 import { MainButton } from "telegram-webapp-solid";
-import { createBooleanTimeoutSignal } from "./utils/boolean-timeout-signal";
+import { createBooleanTimeoutSignal } from "../utils/boolean-timeout-signal";
 
 export type GrimoireProps = {
-  spells: Spell[];
-  onSaveClick: (spells: Spell[]) => void;
+  spells: SpellInGrimoire[];
+  onSaveClick: (spells: SpellInGrimoire[]) => void;
 };
 
 export function Grimoire(props: GrimoireProps) {
   console.log("Grimoire props", props);
+  console.log("Grimoire props.spells", props.spells);
 
-  const [spells, setSpells] = createStore<Spell[]>(props.spells);
+  const [spells, setSpells] = createStore<SpellInGrimoire[]>(props.spells);
   const [confirmRest, setConfirmRest] = createBooleanTimeoutSignal();
 
   function updateUsage(index: number, diff: number) {
@@ -29,21 +31,20 @@ export function Grimoire(props: GrimoireProps) {
           <span>Sorts ({spells.length})</span>
           <span>Utilisation</span>
         </div>
-        <button class="invisible btn btn-square" disabled>
-          -
-        </button>
-        <button class="invisible btn btn-square" disabled>
-          +
-        </button>
+        <div class="invisible btn btn-square"></div>
+        <div class="invisible btn btn-square"></div>
       </div>
       <ul class="flex-1 my-auto flex flex-col space-y-2 overflow-y-auto bg-base-300 -mx-5 p-5 shadow-inner">
         <For each={spells}>
           {(spell, i) => (
             <li class="flex w-full space-x-2">
               <div class="bg-base-100 px-5 overflow-hidden flex place-items-center place-content-between rounded-lg text-primary flex-1">
-                <span class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
+                <Link
+                  href={`/spell/${spell.id}`}
+                  class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap"
+                >
                   {spell.name}
-                </span>
+                </Link>
                 <span class="ml-2 font-bold">{spell.usage}</span>
               </div>
               <button

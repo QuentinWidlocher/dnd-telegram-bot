@@ -1,68 +1,40 @@
-import { Spell } from "shared";
-import { createEffect, createResource, Match, Show, Switch } from "solid-js";
-import { createCloseSignal, createUserSignal } from "telegram-webapp-solid";
-import { Grimoire } from "./Grimoire";
+import { Navigate, Outlet, Route, Router, Routes } from "solid-app-router";
+import { lazy, Suspense } from "solid-js";
 import { Layout } from "./Layout";
+import GrimoireRoute from "./routes/grimoire.route";
+import { grimoireRouteLoader } from "./routes/grimoire.data";
+import { spellRouteLoader } from "./routes/spell.data";
+
+const SpellRoute = lazy(() => import("./routes/spell.route"));
 
 export function App() {
-  const close = createCloseSignal();
-  const user = createUserSignal();
-
-  const [fetchedSpells] = createResource(user?.id ?? 260800881, (id) => {
-    let url = new URL(
-      `https://dnd-telegram-bot.netlify.app/.netlify/functions/get-spells`
-    );
-    url.searchParams.set("user-id", String(id));
-
-    return fetch(url).then((res) => res.json());
-  });
-
-  createEffect(() => {
-    console.log(fetchedSpells.loading);
-    console.log(fetchedSpells.error);
-    console.log(fetchedSpells());
-  });
-
   return (
-    <Switch>
-      <Match when={fetchedSpells()}>
-        <Layout>
-          <Grimoire
-            spells={fetchedSpells()}
-            onSaveClick={async (spells) => {
-              let url = new URL(
-                `https://dnd-telegram-bot.netlify.app/.netlify/functions/save-spells`
-              );
-              url.searchParams.set("user-id", String(user.id));
-
-              await fetch(url, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(spells),
-              });
-
-              close();
-            }}
+    <Router>
+      <Suspense
+        fallback={
+          <Layout>
+            <span class="my-auto w-full text-center-text-hint">
+              Chargement...
+            </span>
+          </Layout>
+        }
+      >
+        <Routes>
+          <Route
+            path="/grimoire"
+            component={GrimoireRoute}
+            data={grimoireRouteLoader}
           />
-        </Layout>
-      </Match>
-      <Match when={fetchedSpells.loading}>
-        <Layout>
-          <span class="my-auto text-center text-hint w-full">
-            Chargement du grimoire...
-          </span>
-        </Layout>
-      </Match>
-      <Match when={fetchedSpells.error != null}>
-        <Layout>
-          <span class="my-auto text-center text-error w-full">
-            {`${console.error(fetchedSpells.error)}`}
-            Erreur lors du chargement du grimoire
-          </span>
-        </Layout>
-      </Match>
-    </Switch>
+          <Route
+            path="/spell/:id"
+            component={SpellRoute}
+            data={spellRouteLoader}
+          />
+          <Route path="/">
+            <Navigate href={"/grimoire"} />
+          </Route>
+        </Routes>
+      </Suspense>
+    </Router>
   );
 }
