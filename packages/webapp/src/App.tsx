@@ -18,8 +18,23 @@ export function App() {
 
   return (
     <Layout>
-      <Switch
-        fallback={
+      <Switch>
+        <Match when={fetchedSpells.loading}>
+          <span class="my-auto text-center text-hint w-full">
+            Chargement du grimoire...
+          </span>
+        </Match>
+        <Match when={fetchedSpells.error}>
+          <span class="my-auto text-center text-error w-full">
+            {`${console.error(fetchedSpells.error)}`}
+            Erreur lors du chargement du grimoire
+          </span>
+        </Match>
+        <Match
+          when={
+            !fetchedSpells.loading && !fetchedSpells.error && fetchedSpells()
+          }
+        >
           <Grimoire
             spells={fetchedSpells()}
             onSaveClick={async (spells) => {
@@ -39,17 +54,6 @@ export function App() {
               close();
             }}
           />
-        }
-      >
-        <Match when={fetchedSpells.loading && !fetchedSpells()}>
-          <span class="my-auto text-center text-hint w-full">
-            Chargement du grimoire...
-          </span>
-        </Match>
-        <Match when={fetchedSpells.error && !fetchedSpells()}>
-          <span class="my-auto text-center text-error w-full">
-            Erreur lors du chargement du grimoire
-          </span>
         </Match>
       </Switch>
     </Layout>
