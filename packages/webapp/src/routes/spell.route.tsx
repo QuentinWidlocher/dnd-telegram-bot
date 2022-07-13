@@ -1,6 +1,6 @@
 import { Spell, spells, schoolsNames, SpellInGrimoire } from 'shared'
 import { RouteDataFunc, useNavigate, useRouteData } from 'solid-app-router'
-import { createSignal, Resource, Show } from 'solid-js'
+import { createEffect, createSignal, Resource, Show } from 'solid-js'
 import { createBackButtonSignal } from 'telegram-webapp-solid'
 import { Layout } from '../components/Layout'
 import { createDatabaseSignal } from '../utils/database-signal'
@@ -17,7 +17,13 @@ export default function SpellRoute() {
     grimoire: Resource<SpellInGrimoire[]>
   }>()
 
-  const [grimoire, setGrimoire] = createSignal(data.grimoire())
+  const [grimoire, setGrimoire] = createSignal<SpellInGrimoire[] | null>(null)
+
+  createEffect(() => {
+    if (!data.grimoire.loading && !data.grimoire.error) {
+      setGrimoire(data.grimoire())
+    }
+  })
 
   const spellIsAlreadyInGrimoire = () =>
     grimoire()?.some((spell) => spell.id == data.spell.id)
@@ -113,7 +119,7 @@ export default function SpellRoute() {
             innerHTML={data.spell.description}
           ></p>
           <Show
-            when={spellIsAlreadyInGrimoire()}
+            when={grimoire() && spellIsAlreadyInGrimoire()}
             fallback={
               <button
                 class="btn btn-primary w-full mt-2"
