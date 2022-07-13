@@ -6,6 +6,7 @@ import { spellRouteLoader } from './routes/spell.data'
 
 const GrimoireRoute = lazy(() => import('./routes/grimoire.route'))
 const SpellRoute = lazy(() => import('./routes/spell.route'))
+const SpellSearchRoute = lazy(() => import('./routes/spell-search.route'))
 
 export function App() {
   return (
@@ -30,6 +31,7 @@ export function App() {
             component={SpellRoute}
             data={spellRouteLoader}
           />
+          <Route path="/spell-search" component={SpellSearchRoute} />
           <Route path="/">
             <Navigate href={'/grimoire'} />
           </Route>

@@ -4,6 +4,7 @@ import { createEffect, For, onCleanup, onMount } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { createMainButtonSignal } from 'telegram-webapp-solid'
 import { createBooleanTimeoutSignal } from '../utils/boolean-timeout-signal'
+import { SpellList } from './SpellList'
 import { LocalTest } from './test'
 
 export type GrimoireProps = {
@@ -52,37 +53,19 @@ export function Grimoire(props: GrimoireProps) {
         <div class="invisible btn btn-square"></div>
         <div class="invisible btn btn-square"></div>
       </div>
-      <ul class="flex-1 my-auto flex flex-col space-y-2 overflow-y-auto bg-base-300 -mx-5 p-5 shadow-inner">
-        <For each={spells}>
-          {(spell, i) => (
-            <li class="flex w-full space-x-2">
-              <Link
-                onClick={() => mainButton.setVisible(false)}
-                href={`/spell/${spell.id}`}
-                class="bg-base-100 focus:bg-primary focus:bg-opacity-20 hover:bg-base-200 hover:text-primary-focus px-5 overflow-hidden flex place-items-center place-content-between rounded-lg text-primary flex-1"
-              >
-                <span class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
-                  {spell.name}
-                </span>
-                <span class="ml-2 font-bold">{spell.usage}</span>
-              </Link>
-              <button
-                class="btn btn-primary-ghost btn-square"
-                onClick={() => updateUsage(i(), -1)}
-                disabled={spell.usage <= 0}
-              >
-                -
-              </button>
-              <button
-                class="btn btn-primary-ghost btn-square"
-                onClick={() => updateUsage(i(), 1)}
-              >
-                +
-              </button>
-            </li>
-          )}
-        </For>
-      </ul>
+      <SpellList
+        spells={spells}
+        showButtons
+        onPlusButtonClick={(i) => updateUsage(i, 1)}
+        onMinusButtonClick={(i) => updateUsage(i, -1)}
+        emptyMessage="Aucun sort dans votre grimoire"
+      >
+        <li class="w-full">
+          <Link href="/spell-search" class="btn btn-primary-ghost w-full">
+            Ajouter un sort au grimoire
+          </Link>
+        </li>
+      </SpellList>
       <div class="flex flex-col mt-5">
         <button
           class="btn"

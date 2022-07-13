@@ -30,15 +30,13 @@ export default function SpellRoute() {
 
   const database = createDatabaseSignal()
 
-  function goBack() {
-    backButton.setVisible(false)
-    navigate(-1)
-  }
-
   const navigate = useNavigate()
   const backButton = createBackButtonSignal({
     show: true,
-    onClick: goBack,
+    onClick: function goBack() {
+      backButton.setVisible(false)
+      navigate(-1)
+    },
   })
 
   async function addToGrimoire() {
