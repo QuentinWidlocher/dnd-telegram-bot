@@ -1,5 +1,7 @@
 import { searchSpellByName, spells } from 'shared'
+import { useNavigate } from 'solid-app-router'
 import { createSignal, Show } from 'solid-js'
+import { createBackButtonSignal } from 'telegram-webapp-solid'
 import { Layout } from '../components/Layout'
 import { SpellList } from '../components/SpellList'
 
@@ -7,6 +9,15 @@ export default function SpellSearchRoute() {
   const [searchQuery, setSearchQuery] = createSignal('')
   const filteredSpells = () =>
     searchQuery() ? searchSpellByName(searchQuery()) : []
+
+  const navigate = useNavigate()
+  const backButton = createBackButtonSignal({
+    show: true,
+    onClick: function goBack() {
+      backButton.setVisible(false)
+      navigate('/grimoire')
+    },
+  })
 
   return (
     <Layout>

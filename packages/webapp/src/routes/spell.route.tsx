@@ -35,7 +35,7 @@ export default function SpellRoute() {
     show: true,
     onClick: function goBack() {
       backButton.setVisible(false)
-      navigate(-1)
+      navigate('/grimoire')
     },
   })
 
