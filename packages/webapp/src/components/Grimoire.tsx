@@ -1,6 +1,6 @@
 import { SpellInGrimoire } from 'shared'
 import { Link } from 'solid-app-router'
-import { For, onCleanup, onMount } from 'solid-js'
+import { createEffect, For, onCleanup, onMount } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { createMainButtonSignal } from 'telegram-webapp-solid'
 import { createBooleanTimeoutSignal } from '../utils/boolean-timeout-signal'
@@ -12,14 +12,27 @@ export type GrimoireProps = {
 }
 
 export function Grimoire(props: GrimoireProps) {
+  const originalSpells = [...props.spells.map((s) => ({ ...s }))]
   const [spells, setSpells] = createStore<SpellInGrimoire[]>(props.spells)
   const [confirmRest, setConfirmRest] = createBooleanTimeoutSignal()
   const mainButton = createMainButtonSignal({
     text: 'Sauvegarder',
-    show: true,
+    show: false,
     onClick: () => {
       props.onSaveClick(spells)
     },
+  })
+
+  createEffect(() => {
+    if (
+      originalSpells.some(
+        (s) => spells.find((s2) => s2.id == s.id)?.usage != s.usage,
+      )
+    ) {
+      mainButton.setVisible(true)
+    } else {
+      mainButton.setVisible(false)
+    }
   })
 
   function updateUsage(index: number, diff: number) {
