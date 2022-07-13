@@ -23,20 +23,20 @@ export function Grimoire(props: GrimoireProps) {
   }
 
   return (
-    <>
-      <ul class="my-auto flex flex-col space-y-2">
-        <li class="flex w-full space-x-2 h-5">
-          <div class="flex-1 flex justify-between text-hint text-sm">
-            <span>Sort</span>
-            <span>Utilisation</span>
-          </div>
-          <button class="invisible btn btn-square" disabled>
-            -
-          </button>
-          <button class="invisible btn btn-square" disabled>
-            +
-          </button>
-        </li>
+    <div class="flex flex-col flex-1 overflow-hidden">
+      <div class="flex w-full space-x-2 h-5">
+        <div class="flex-1 flex justify-between text-hint text-sm">
+          <span>Sort</span>
+          <span>Utilisation</span>
+        </div>
+        <button class="invisible btn btn-square" disabled>
+          -
+        </button>
+        <button class="invisible btn btn-square" disabled>
+          +
+        </button>
+      </div>
+      <ul class="flex-1 my-auto flex flex-col space-y-2 overflow-y-auto">
         <For each={spells}>
           {(spell, i) => (
             <li class="flex w-full space-x-2">
@@ -62,41 +62,41 @@ export function Grimoire(props: GrimoireProps) {
             </li>
           )}
         </For>
-        <li class="flex flex-col">
-          <button
-            class="btn mt-5"
-            classList={{
-              "btn-error": confirmRest(),
-              "btn-primary-ghost": !confirmRest(),
-            }}
-            onClick={() => {
-              if (confirmRest()) {
-                setSpells(
-                  spells.map((spell) => ({
-                    ...spell,
-                    usage: 0,
-                  }))
-                );
-                setConfirmRest(false);
-              } else {
-                setConfirmRest(true);
-              }
-            }}
-            disabled={spells.every((s) => s.usage <= 0)}
-          >
-            {confirmRest() ? "Appuyez pour valider" : "Se reposer"}
-          </button>
-          <span class="text-hint text-center w-full mt-2">
-            Un repos remet tous les compteurs à zéro
-          </span>
-        </li>
       </ul>
+      <div class="flex flex-col mt-5">
+        <button
+          class="btn"
+          classList={{
+            "btn-error": confirmRest(),
+            "btn-primary-ghost": !confirmRest(),
+          }}
+          onClick={() => {
+            if (confirmRest()) {
+              setSpells(
+                spells.map((spell) => ({
+                  ...spell,
+                  usage: 0,
+                }))
+              );
+              setConfirmRest(false);
+            } else {
+              setConfirmRest(true);
+            }
+          }}
+          disabled={spells.every((s) => s.usage <= 0)}
+        >
+          {confirmRest() ? "Appuyez pour valider" : "Se reposer"}
+        </button>
+        <span class="text-hint text-center w-full mt-2">
+          Un repos remet tous les compteurs à zéro
+        </span>
+      </div>
       <MainButton
         text="Sauvegarder"
         onClick={() => {
           props.onSaveClick(spells);
         }}
       />
-    </>
+    </div>
   );
 }
