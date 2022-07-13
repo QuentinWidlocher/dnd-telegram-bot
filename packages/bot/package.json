@@ -5,7 +5,7 @@
   "main": "dist/dnd-telegram-bot.cjs.js",
   "module": "dist/dnd-telegram-bot.esm.js",
   "scripts": {
-    "build": "pnpm preconstruct build",
+    "build": "",
     "deploy": "pnpm build && pnpm zip && pnpm aws-deploy",
     "zip": "cp dist/dnd-telegram-bot.cjs.prod.js aws/index.js && cd aws && zip -r ../function.zip *",
     "aws-deploy": "aws lambda update-function-code --function-name DnDTelegramBot --zip-file fileb://function.zip",

@@ -6,5 +6,8 @@ export const handler = async (event: any, context: any) => {
 
   let userId = event.queryStringParameters?.["user-id"];
   invariant(userId, "userId is required");
-  return { statusCode: 200, body: JSON.stringify(await retreive(userId)) };
+  return {
+    statusCode: 200,
+    body: JSON.stringify((await retreive(userId)).spells ?? []),
+  };
 };
