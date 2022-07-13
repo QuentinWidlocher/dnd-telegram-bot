@@ -61,7 +61,11 @@ export function Grimoire(props: GrimoireProps) {
         emptyMessage="Aucun sort dans votre grimoire"
       >
         <li class="w-full">
-          <Link href="/spell-search" class="btn btn-primary-ghost w-full">
+          <Link
+            href="/spell-search"
+            class="btn btn-primary-ghost w-full"
+            onClick={() => mainButton.setVisible(false)}
+          >
             Ajouter un sort au grimoire
           </Link>
         </li>
