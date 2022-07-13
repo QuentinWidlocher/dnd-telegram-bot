@@ -25,6 +25,18 @@ export function Grimoire(props: GrimoireProps) {
   return (
     <>
       <ul class="my-auto flex flex-col space-y-2">
+        <li class="flex w-full space-x-2 h-5">
+          <div class="flex-1 flex justify-between text-hint text-sm">
+            <span>Sort</span>
+            <span>Utilisation</span>
+          </div>
+          <button class="invisible btn btn-square" disabled>
+            -
+          </button>
+          <button class="invisible btn btn-square" disabled>
+            +
+          </button>
+        </li>
         <For each={spells}>
           {(spell, i) => (
             <li class="flex w-full space-x-2">
@@ -34,14 +46,13 @@ export function Grimoire(props: GrimoireProps) {
                 </span>
                 <span class="ml-2 font-bold">{spell.usage}</span>
               </div>
-              <Show when={spell.usage > 0}>
-                <button
-                  class="btn btn-primary-ghost btn-square"
-                  onClick={() => updateUsage(i(), -1)}
-                >
-                  -
-                </button>
-              </Show>
+              <button
+                class="btn btn-primary-ghost btn-square"
+                onClick={() => updateUsage(i(), -1)}
+                disabled={spell.usage <= 0}
+              >
+                -
+              </button>
               <button
                 class="btn btn-primary-ghost btn-square"
                 onClick={() => updateUsage(i(), 1)}

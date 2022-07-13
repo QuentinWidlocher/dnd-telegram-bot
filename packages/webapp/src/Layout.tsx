@@ -1,5 +1,5 @@
 import hexToHsl from "hex-to-hsl";
-import { JSX } from "solid-js";
+import { children, createEffect, JSX, ParentProps } from "solid-js";
 import { createThemeSignal, StableContainer } from "telegram-webapp-solid";
 
 function hexToCssHsl(hex: string) {
@@ -14,8 +14,12 @@ function hexToDarkerCssHsl(hex: string) {
   return `${h} ${s}% ${l * 0.8}%`;
 }
 
-export function Layout(props: { children: JSX.Element }) {
+export function Layout(props: ParentProps) {
   const theme = createThemeSignal();
+  createEffect(() => {
+    console.log("children", props.children);
+  });
+  const c = children(() => props.children);
 
   return (
     <StableContainer
