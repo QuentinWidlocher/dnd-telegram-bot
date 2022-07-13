@@ -1,6 +1,7 @@
 import { createResource, Match, Switch } from "solid-js";
 import { createCloseSignal, createUserSignal } from "telegram-webapp-solid";
 import { Grimoire } from "./Grimoire";
+import { Layout } from "./Layout";
 
 export function App() {
   const close = createCloseSignal();
@@ -16,7 +17,7 @@ export function App() {
   });
 
   return (
-    <>
+    <Layout>
       <Switch
         fallback={
           <Grimoire
@@ -51,6 +52,6 @@ export function App() {
           </span>
         </Match>
       </Switch>
-    </>
+    </Layout>
   );
 }

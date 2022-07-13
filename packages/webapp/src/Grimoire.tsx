@@ -22,7 +22,7 @@ export function Grimoire(props: GrimoireProps) {
   }
 
   return (
-    <Layout>
+    <>
       <ul class="my-auto flex flex-col space-y-2">
         <For each={spells}>
           {(spell, i) => (
@@ -85,6 +85,6 @@ export function Grimoire(props: GrimoireProps) {
           props.onSaveClick(spells);
         }}
       />
-    </Layout>
+    </>
   );
 }
