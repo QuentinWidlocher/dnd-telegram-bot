@@ -8,7 +8,7 @@ export function App() {
   const close = createCloseSignal();
   const user = createUserSignal();
 
-  const [fetchedSpells] = createResource<Spell[]>(user.id, (id) => {
+  const [fetchedSpells] = createResource(user.id, (id) => {
     let url = new URL(
       `https://dnd-telegram-bot.netlify.app/.netlify/functions/get-spells`
     );
@@ -19,36 +19,38 @@ export function App() {
 
   return (
     <Layout>
-      <Show when={fetchedSpells.loading}>
-        <span class="my-auto text-center text-hint w-full">
-          Chargement du grimoire...
-        </span>
-      </Show>
-      <Show when={fetchedSpells.error}>
-        <span class="my-auto text-center text-error w-full">
-          {`${console.error(fetchedSpells.error)}`}
-          Erreur lors du chargement du grimoire
-        </span>
-      </Show>
-      <Grimoire
-        spells={fetchedSpells()}
-        onSaveClick={async (spells) => {
-          let url = new URL(
-            `https://dnd-telegram-bot.netlify.app/.netlify/functions/save-spells`
-          );
-          url.searchParams.set("user-id", String(user.id));
+      <>
+        <Show when={fetchedSpells.loading}>
+          <span class="my-auto text-center text-hint w-full">
+            Chargement du grimoire...
+          </span>
+        </Show>
+        <Show when={fetchedSpells.error}>
+          <span class="my-auto text-center text-error w-full">
+            {`${console.error(fetchedSpells.error)}`}
+            Erreur lors du chargement du grimoire
+          </span>
+        </Show>
+        <Grimoire
+          spells={fetchedSpells()}
+          onSaveClick={async (spells) => {
+            let url = new URL(
+              `https://dnd-telegram-bot.netlify.app/.netlify/functions/save-spells`
+            );
+            url.searchParams.set("user-id", String(user.id));
 
-          await fetch(url, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(spells),
-          });
+            await fetch(url, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(spells),
+            });
 
-          close();
-        }}
-      />
+            close();
+          }}
+        />
+      </>
     </Layout>
   );
 }
