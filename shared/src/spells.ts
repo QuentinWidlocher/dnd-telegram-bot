@@ -17,7 +17,9 @@ export function fuzzySearchRegexTemplate(word: string) {
   return `(?=[a-z\u00E0-\u00FC]*${word}[a-z\u00E0-\u00FC]*)`;
 }
 
-export const schoolsNames = {
+export const schoolsNames: {
+  [k in Spell['school']]: string;
+} = {
   abjuration: "Abjuration",
   conjuration: "Invocation",
   divination: "Divination",
