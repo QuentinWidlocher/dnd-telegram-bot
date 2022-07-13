@@ -7,7 +7,9 @@ export function App() {
   const user = createUserSignal();
 
   const [fetchedSpells] = createResource(() => {
-    let url = new URL(`${import.meta.env.API_URL}/get-spells`);
+    let url = new URL(
+      `https://dnd-telegram-bot.netlify.app/.netlify/functions/get-spells`
+    );
     url.searchParams.set("user-id", String(user.id));
 
     return fetch(url).then((res) => res.json());
@@ -20,7 +22,9 @@ export function App() {
           <Grimoire
             spells={fetchedSpells()}
             onSaveClick={async (spells) => {
-              let url = new URL(`${import.meta.env.API_URL}/save-spells`);
+              let url = new URL(
+                `https://dnd-telegram-bot.netlify.app/.netlify/functions/save-spells`
+              );
               url.searchParams.set("user-id", String(user.id));
 
               await fetch(url, {
