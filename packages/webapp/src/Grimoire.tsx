@@ -23,10 +23,10 @@ export function Grimoire(props: GrimoireProps) {
   }
 
   return (
-    <div class="flex flex-col flex-1 overflow-hidden">
-      <div class="flex w-full space-x-2 h-5">
-        <div class="flex-1 flex justify-between text-hint text-sm">
-          <span>Sort</span>
+    <div class="flex flex-col flex-1 overflow-y-hidden -mx-5 px-5">
+      <div class="flex w-full space-x-2 h-5 mb-1">
+        <div class="flex-1 flex justify-between text-hint text-sm px-2">
+          <span>Sorts ({spells.length})</span>
           <span>Utilisation</span>
         </div>
         <button class="invisible btn btn-square" disabled>
@@ -36,11 +36,11 @@ export function Grimoire(props: GrimoireProps) {
           +
         </button>
       </div>
-      <ul class="flex-1 my-auto flex flex-col space-y-2 overflow-y-auto">
+      <ul class="flex-1 my-auto flex flex-col space-y-2 overflow-y-auto bg-base-300 -mx-5 p-5 shadow-inner">
         <For each={spells}>
           {(spell, i) => (
             <li class="flex w-full space-x-2">
-              <div class="bg-base-200 px-5 overflow-hidden flex place-items-center place-content-between rounded-lg text-primary flex-1">
+              <div class="bg-base-100 px-5 overflow-hidden flex place-items-center place-content-between rounded-lg text-primary flex-1">
                 <span class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
                   {spell.name}
                 </span>
@@ -87,7 +87,7 @@ export function Grimoire(props: GrimoireProps) {
         >
           {confirmRest() ? "Appuyez pour valider" : "Se reposer"}
         </button>
-        <span class="text-hint text-center w-full mt-2">
+        <span class="text-hint text-center text-sm w-full mt-2">
           Un repos remet tous les compteurs à zéro
         </span>
       </div>
