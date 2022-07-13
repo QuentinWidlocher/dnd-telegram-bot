@@ -2,7 +2,6 @@ import { Spell } from "shared";
 import { For, Show } from "solid-js";
 import { createStore } from "solid-js/store";
 import { MainButton } from "telegram-webapp-solid";
-import { Layout } from "./Layout";
 import { createBooleanTimeoutSignal } from "./utils/boolean-timeout-signal";
 
 export type GrimoireProps = {

@@ -8,11 +8,11 @@ export function App() {
   const close = createCloseSignal();
   const user = createUserSignal();
 
-  const [fetchedSpells] = createResource<Spell[]>(() => {
+  const [fetchedSpells] = createResource<Spell[]>(user.id, (id) => {
     let url = new URL(
       `https://dnd-telegram-bot.netlify.app/.netlify/functions/get-spells`
     );
-    url.searchParams.set("user-id", String(user.id));
+    url.searchParams.set("user-id", String(id));
 
     return fetch(url).then((res) => res.json());
   });
@@ -30,27 +30,25 @@ export function App() {
           Erreur lors du chargement du grimoire
         </span>
       </Show>
-      <Show when={fetchedSpells()}>
-        <Grimoire
-          spells={fetchedSpells()}
-          onSaveClick={async (spells) => {
-            let url = new URL(
-              `https://dnd-telegram-bot.netlify.app/.netlify/functions/save-spells`
-            );
-            url.searchParams.set("user-id", String(user.id));
+      <Grimoire
+        spells={fetchedSpells()}
+        onSaveClick={async (spells) => {
+          let url = new URL(
+            `https://dnd-telegram-bot.netlify.app/.netlify/functions/save-spells`
+          );
+          url.searchParams.set("user-id", String(user.id));
 
-            await fetch(url, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(spells),
-            });
+          await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(spells),
+          });
 
-            close();
-          }}
-        />
-      </Show>
+          close();
+        }}
+      />
     </Layout>
   );
 }
