@@ -43,6 +43,7 @@ export default function SpellRoute() {
   })
 
   async function addToGrimoire() {
+    setSaving(true)
     const updatedGrimoire = [
       ...grimoire().filter((spell) => spell.id != data.spell.id),
       {
@@ -53,6 +54,7 @@ export default function SpellRoute() {
     ]
     await database.saveSpells(updatedGrimoire)
     setGrimoire(updatedGrimoire)
+    setSaving(false)
   }
 
   async function removeFromGrimoire() {
