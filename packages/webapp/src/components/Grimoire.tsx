@@ -48,8 +48,8 @@ export function Grimoire(props: GrimoireProps) {
     <div class="flex flex-col flex-1 overflow-y-hidden -mx-5 px-5">
       <div class="flex w-full space-x-2 h-5 mb-1">
         <div class="flex-1 flex justify-between text-hint text-sm px-2">
-          <span>Sorts ({spells.length})</span>
-          <span>Utilisation</span>
+          <span>Sort{spells.length > 1 ? `s (${spells.length})` : ''}</span>
+          <span>Utilisations</span>
         </div>
         <div class="invisible btn btn-square"></div>
         <div class="invisible btn btn-square"></div>
@@ -64,7 +64,7 @@ export function Grimoire(props: GrimoireProps) {
         <li class="w-full">
           <Link
             href="/spell-search"
-            class="btn btn-primary-ghost w-full space-x-2"
+            class="btn btn-primary w-full space-x-2"
             onClick={() => mainButton.setVisible(false)}
           >
             <span>Ajouter un sort au grimoire</span>

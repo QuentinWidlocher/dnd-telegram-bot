@@ -20,6 +20,7 @@ export default function SpellRoute() {
   }>()
 
   const [grimoire, setGrimoire] = createSignal<SpellInGrimoire[] | null>(null)
+  const [saving, setSaving] = createSignal(false)
 
   createEffect(() => {
     if (!data.grimoire.loading && !data.grimoire.error) {
@@ -55,11 +56,13 @@ export default function SpellRoute() {
   }
 
   async function removeFromGrimoire() {
+    setSaving(true)
     const updatedGrimoire = grimoire().filter(
       (spell) => spell.id != data.spell.id,
     )
     await database.saveSpells(updatedGrimoire)
     setGrimoire(updatedGrimoire)
+    setSaving(false)
   }
 
   return (
@@ -123,21 +126,23 @@ export default function SpellRoute() {
             fallback={
               <button
                 class="btn btn-primary w-full mt-2 space-x-2"
+                classList={{ loading: saving() }}
                 onClick={() => addToGrimoire()}
-                disabled={data.grimoire.loading}
+                disabled={saving() || data.grimoire.loading}
               >
+                {saving() ? null : <AddDatabaseScript />}
                 <span>Ajouter au grimoire</span>
-                <AddDatabaseScript />
               </button>
             }
           >
             <button
               class="btn btn-error-ghost w-full mt-2 space-x-2"
+              classList={{ loading: saving() }}
               onClick={() => removeFromGrimoire()}
-              disabled={data.grimoire.loading}
+              disabled={saving() || data.grimoire.loading}
             >
+              {saving() ? null : <RemoveDatabaseScript />}
               <span>Retirer du grimoire</span>
-              <RemoveDatabaseScript />
             </button>
           </Show>
         </div>
