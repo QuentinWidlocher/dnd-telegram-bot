@@ -159,12 +159,8 @@ const listGrimoireCommand: Command = async (params, message) => {
       ]),
       [
         {
-          label: "Réinitialiser votre grimoire",
+          label: "Se reposer",
           command: "/grimoire rest",
-        },
-        {
-          label: "Supprimer tous les sorts",
-          command: "/grimoire remove all",
         },
       ],
     ]),
@@ -198,11 +194,11 @@ const useSpellCommand: Command = async (params, message) => {
   data = {
     ...data,
     spells:
-      data.spells?.map((spell) => {
-        if (spell.id == spell.id) {
-          spell.usage++;
+      data.spells?.map((s) => {
+        if (s.id == spell.id) {
+          s.usage++;
         }
-        return spell;
+        return s;
       }) ?? [],
   };
   await store(message.from.id, data);
