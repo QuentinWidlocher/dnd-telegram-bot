@@ -120,7 +120,7 @@ const removeFromGrimoireCommand: Command = async (params, message) => {
   let data = await retreive(message.from.id);
   data = {
     ...data,
-    spells: data.spells?.filter((spell) => spell.id != spell.id) ?? [],
+    spells: data.spells?.filter((s) => s.id != spell.id) ?? [],
   };
   await store(message.from.id, data);
 
