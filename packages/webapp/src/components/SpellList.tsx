@@ -2,6 +2,8 @@ import { Spell, SpellInGrimoire } from 'shared'
 import { Link } from 'solid-app-router'
 import { createEffect, For, mergeProps, ParentProps, Show } from 'solid-js'
 import { createMainButtonSignal } from 'telegram-webapp-solid'
+import Plus from '../../node_modules/iconoir/icons/plus.svg'
+import Minus from '../../node_modules/iconoir/icons/minus.svg'
 
 type AnySpell = SpellInGrimoire | Spell
 
@@ -62,13 +64,13 @@ export function SpellList(props: ParentProps<SpellListProps>) {
                 onClick={() => mergedProps.onMinusButtonClick(i())}
                 disabled={assertSpellInGrimoire(spell) && spell.usage <= 0}
               >
-                -
+                <Minus />
               </button>
               <button
                 class="btn btn-primary-ghost btn-square"
                 onClick={() => mergedProps.onPlusButtonClick(i())}
               >
-                +
+                <Plus />
               </button>
             </Show>
           </li>

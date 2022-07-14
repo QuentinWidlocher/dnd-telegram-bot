@@ -1,11 +1,12 @@
 import { SpellInGrimoire } from 'shared'
 import { Link } from 'solid-app-router'
-import { createEffect, For, onCleanup, onMount } from 'solid-js'
+import { createEffect } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { createMainButtonSignal } from 'telegram-webapp-solid'
 import { createBooleanTimeoutSignal } from '../utils/boolean-timeout-signal'
 import { SpellList } from './SpellList'
-import { LocalTest } from './test'
+import HalfMoon from '../../node_modules/iconoir/icons/half-moon.svg'
+import AddDatabaseScript from '../../node_modules/iconoir/icons/add-database-script.svg'
 
 export type GrimoireProps = {
   spells: SpellInGrimoire[]
@@ -63,16 +64,17 @@ export function Grimoire(props: GrimoireProps) {
         <li class="w-full">
           <Link
             href="/spell-search"
-            class="btn btn-primary-ghost w-full"
+            class="btn btn-primary-ghost w-full space-x-2"
             onClick={() => mainButton.setVisible(false)}
           >
-            Ajouter un sort au grimoire
+            <span>Ajouter un sort au grimoire</span>
+            <AddDatabaseScript />
           </Link>
         </li>
       </SpellList>
       <div class="flex flex-col mt-5">
         <button
-          class="btn"
+          class="btn space-x-2"
           classList={{
             'btn-error': confirmRest(),
             'btn-primary-ghost': !confirmRest(),
@@ -92,7 +94,8 @@ export function Grimoire(props: GrimoireProps) {
           }}
           disabled={spells.every((s) => s.usage <= 0)}
         >
-          {confirmRest() ? 'Appuyez pour valider' : 'Se reposer'}
+          <span>{confirmRest() ? 'Appuyez pour valider' : 'Se reposer'}</span>
+          <HalfMoon />
         </button>
         <span class="text-hint text-center text-sm w-full mt-2">
           Un repos remet tous les compteurs à zéro

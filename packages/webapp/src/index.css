@@ -22,6 +22,10 @@ body {
   @apply normal-case;
 }
 
+.input {
+  @apply focus:outline-offset-0;
+}
+
 .btn.btn-primary-ghost {
   @apply btn-primary text-primary border-none hover:text-primary-content bg-opacity-20;
 }

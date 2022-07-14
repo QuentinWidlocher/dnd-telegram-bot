@@ -4,6 +4,8 @@ import { createEffect, createSignal, Resource, Show } from 'solid-js'
 import { createBackButtonSignal } from 'telegram-webapp-solid'
 import { Layout } from '../components/Layout'
 import { createDatabaseSignal } from '../utils/database-signal'
+import AddDatabaseScript from '../../node_modules/iconoir/icons/add-database-script.svg'
+import RemoveDatabaseScript from '../../node_modules/iconoir/icons/remove-database-script.svg'
 
 export const spellRouteLoader: RouteDataFunc<Promise<Spell>> = async ({
   params,
@@ -120,20 +122,22 @@ export default function SpellRoute() {
             when={grimoire() && spellIsAlreadyInGrimoire()}
             fallback={
               <button
-                class="btn btn-primary w-full mt-2"
+                class="btn btn-primary w-full mt-2 space-x-2"
                 onClick={() => addToGrimoire()}
                 disabled={data.grimoire.loading}
               >
-                Ajouter au grimoire
+                <span>Ajouter au grimoire</span>
+                <AddDatabaseScript />
               </button>
             }
           >
             <button
-              class="btn btn-error-ghost w-full mt-2"
+              class="btn btn-error-ghost w-full mt-2 space-x-2"
               onClick={() => removeFromGrimoire()}
               disabled={data.grimoire.loading}
             >
-              Retirer du grimoire
+              <span>Retirer du grimoire</span>
+              <RemoveDatabaseScript />
             </button>
           </Show>
         </div>
