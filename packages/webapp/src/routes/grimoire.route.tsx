@@ -1,7 +1,10 @@
 import { SpellInGrimoire } from 'shared'
 import { useRouteData } from 'solid-app-router'
 import { Resource, Show } from 'solid-js'
-import { createCloseSignal, createUserSignal } from 'telegram-webapp-solid'
+import {
+  createCloseSignal,
+  createMainButtonSignal,
+} from 'telegram-webapp-solid'
 import { Grimoire } from '../components/Grimoire'
 import { Layout } from '../components/Layout'
 import { createDatabaseSignal } from '../utils/database-signal'
@@ -10,6 +13,7 @@ export default function GrimoireRoute() {
   const database = createDatabaseSignal()
   const close = createCloseSignal()
   const spells = useRouteData<Resource<SpellInGrimoire[]>>()
+  const mainButton = createMainButtonSignal({})
   console.log('Grimoire routeData', spells)
 
   return (
@@ -18,8 +22,12 @@ export default function GrimoireRoute() {
         <Grimoire
           spells={spells()}
           onSaveClick={async (spells) => {
+            mainButton.setProgressVisible(true)
+            mainButton.setActive(false)
             await database.saveSpells(spells)
             close()
+            mainButton.setProgressVisible(false)
+            mainButton.setActive(true)
           }}
         />
       </Layout>
