@@ -29,6 +29,7 @@ export function Grimoire(props: GrimoireProps) {
 
   createEffect(() => {
     if (
+      originalSpells.length != spells.length ||
       originalSpells.some(
         (s) => spells.find((s2) => s2.id == s.id)?.usage != s.usage
       )

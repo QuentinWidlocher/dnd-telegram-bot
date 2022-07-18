@@ -70,13 +70,14 @@ export function SpellList(props: ParentProps<SpellListProps>) {
               <div class="bg-base-100 overflow-hidden flex place-items-center place-content-between rounded-lg text-primary flex-1 pr-5">
                 <input
                   type="text"
+                  value={spell.name}
                   class="flex-1 input text-base min-w-0 rounded-r-none"
-                  onInput={(e) =>
+                  onInput={(e) => {
                     mergedProps.onSpellChange(i(), {
                       ...(spell as SpellInGrimoire),
                       name: e.currentTarget.value,
-                    })
-                  }
+                    });
+                  }}
                 >
                   {spell.name}
                 </input>
