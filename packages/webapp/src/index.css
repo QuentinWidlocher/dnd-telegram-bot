@@ -33,3 +33,13 @@ body {
 .btn.btn-error-ghost {
   @apply btn-error text-error border-none hover:text-error-content bg-opacity-20;
 }
+
+input.number-spinner-none::-webkit-outer-spin-button,
+input.number-spinner-none::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input.number-spinner-none[type=number] {
+  -moz-appearance: textfield;
+}

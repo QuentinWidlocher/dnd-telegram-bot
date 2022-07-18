@@ -122,6 +122,7 @@ export function Grimoire(props: GrimoireProps) {
               )
               setConfirmRest(false)
             } else {
+              console.log(spells)
               setConfirmRest(true)
             }
           }}

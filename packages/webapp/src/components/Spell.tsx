@@ -34,23 +34,33 @@ export function Spell(props: SpellProps) {
           (assertSpellInGrimoire(props.spell) && !props.spell.custom)
         }
       >
-        <Link
+        <div
           onClick={() => mainButton.setVisible(false)}
-          href={`/spell/${props.spell.id}`}
-          class="bg-base-100 focus:bg-primary focus:bg-opacity-20 hover:bg-base-200 hover:text-primary-focus pl-5 pr-3 overflow-hidden flex place-items-center place-content-between rounded-lg text-primary flex-1 py-3"
+          class="bg-base-100 focus:bg-primary focus:bg-opacity-20 hover:bg-base-200 hover:text-primary-focus pl-5 overflow-hidden flex place-items-center place-content-between rounded-lg text-primary flex-1"
         >
-          <span class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
+          <Link
+            href={`/spell/${props.spell.id}`}
+            class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap"
+          >
             {props.spell.name}
-          </span>
+          </Link>
           <Show when={assertSpellInGrimoire(props.spell)}>
-            <span class="font-bold w-5 text-center">
-              {assertSpellInGrimoire(props.spell) && props.spell.usage}
-            </span>
+            <input
+              type="number"
+              class="input m-0 rounded-l-none w-10 px-0 number-spinner-none font-bold text-center"
+              value={(props.spell as SpellInGrimoire).usage}
+              onInput={(e) =>
+                props.onSpellChange({
+                  ...props.spell,
+                  usage: e.currentTarget.valueAsNumber,
+                } as SpellInGrimoire)
+              }
+            />
           </Show>
-        </Link>
+        </div>
       </Show>
       <Show when={assertSpellInGrimoire(props.spell) && props.spell.custom}>
-        <div class="bg-base-100 flex min-w-0 place-items-center place-content-between rounded-lg text-primary flex-1 pr-3">
+        <div class="bg-base-100 flex min-w-0 place-items-center place-content-between rounded-lg text-primary flex-1">
           <input
             type="text"
             value={props.spell.name}
@@ -91,9 +101,17 @@ export function Spell(props: SpellProps) {
               )}
             </button>
           </div>
-          <span class="ml-3 font-bold w-5 text-center">
-            {assertSpellInGrimoire(props.spell) && props.spell.usage}
-          </span>
+          <input
+            type="number"
+            class="input m-0 rounded-l-none w-10 px-0 number-spinner-none font-bold text-center"
+            value={(props.spell as SpellInGrimoire).usage}
+            onInput={(e) =>
+              props.onSpellChange({
+                ...props.spell,
+                usage: e.currentTarget.valueAsNumber,
+              } as SpellInGrimoire)
+            }
+          />
         </div>
       </Show>
       <Show when={assertSpellInGrimoire(props.spell) && props.showButtons}>
