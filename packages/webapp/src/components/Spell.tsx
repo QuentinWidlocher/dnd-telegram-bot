@@ -37,20 +37,20 @@ export function Spell(props: SpellProps) {
         <Link
           onClick={() => mainButton.setVisible(false)}
           href={`/spell/${props.spell.id}`}
-          class="bg-base-100 focus:bg-primary focus:bg-opacity-20 hover:bg-base-200 hover:text-primary-focus px-5 overflow-hidden flex place-items-center place-content-between rounded-lg text-primary flex-1 py-3"
+          class="bg-base-100 focus:bg-primary focus:bg-opacity-20 hover:bg-base-200 hover:text-primary-focus pl-5 pr-3 overflow-hidden flex place-items-center place-content-between rounded-lg text-primary flex-1 py-3"
         >
           <span class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
             {props.spell.name}
           </span>
           <Show when={assertSpellInGrimoire(props.spell)}>
-            <span class="ml-2 font-bold">
+            <span class="font-bold w-5 text-center">
               {assertSpellInGrimoire(props.spell) && props.spell.usage}
             </span>
           </Show>
         </Link>
       </Show>
       <Show when={assertSpellInGrimoire(props.spell) && props.spell.custom}>
-        <div class="bg-base-100 flex min-w-0 place-items-center place-content-between rounded-lg text-primary flex-1 pr-5">
+        <div class="bg-base-100 flex min-w-0 place-items-center place-content-between rounded-lg text-primary flex-1 pr-3">
           <input
             type="text"
             value={props.spell.name}
@@ -91,7 +91,7 @@ export function Spell(props: SpellProps) {
               )}
             </button>
           </div>
-          <span class="ml-5 font-bold">
+          <span class="ml-3 font-bold w-5 text-center">
             {assertSpellInGrimoire(props.spell) && props.spell.usage}
           </span>
         </div>
