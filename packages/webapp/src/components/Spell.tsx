@@ -50,11 +50,11 @@ export function Spell(props: SpellProps) {
         </Link>
       </Show>
       <Show when={assertSpellInGrimoire(props.spell) && props.spell.custom}>
-        <div class="bg-base-100 flex place-items-center place-content-between rounded-lg text-primary flex-1 pr-5">
+        <div class="bg-base-100 flex min-w-0 place-items-center place-content-between rounded-lg text-primary flex-1 pr-5">
           <input
             type="text"
             value={props.spell.name}
-            class="flex-1 input text-base min-w-0 rounded-r-none"
+            class="flex-1 input text-base pr-0 min-w-0 rounded-r-none"
             onInput={(e) => {
               props.onSpellChange({
                 ...(props.spell as SpellInGrimoire),
