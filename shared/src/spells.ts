@@ -1,5 +1,5 @@
 import { spells } from ".";
-import { Spell } from "./types/spell";
+import { AnySpell, Spell, SpellInGrimoire } from "./types/spell";
 
 export function searchSpellByName(name: string): Spell[] {
   const fullRegexString = name
@@ -28,3 +28,11 @@ export const schoolsNames: {
   necromancy: "Nécromancie",
   transmutation: "Transmutation",
 } as const;
+
+export function assertSpellInGrimoire(spell: AnySpell): spell is SpellInGrimoire {
+  return 'usage' in spell
+}
+
+export function assertSpell(spell: AnySpell): spell is Spell {
+  return !assertSpellInGrimoire(spell);
+}

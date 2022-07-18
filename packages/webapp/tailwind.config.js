@@ -9,6 +9,9 @@ module.exports = {
     extend: {
       colors: {
         'hint': 'var(--tg-theme-hint-color)'
+      },
+      screens: {
+        xs: '380px'
       }
     },
   },

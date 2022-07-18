@@ -3,7 +3,7 @@ import { RouteDataFunc, useNavigate } from "solid-app-router";
 import { Resource } from "solid-js";
 import { createDatabaseSignal } from "../utils/database-signal";
 
-export const spellRouteLoader: RouteDataFunc = ({ params, data }) => {
+export const spellRouteLoader: RouteDataFunc = ({ params }) => {
   const foundSpell = spells.find((spell) => spell.id === params.id);
 
   if (foundSpell == null) {
