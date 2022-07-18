@@ -22,4 +22,7 @@ export type Spell = {
   higherLevel?: string;
 };
 
-export type SpellInGrimoire = Pick<Spell, "name" | "id"> & { usage: number };
+export type SpellInGrimoire = Pick<Spell, "name" | "id"> & {
+  usage: number;
+  custom: boolean;
+};

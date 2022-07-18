@@ -29,6 +29,7 @@ importers:
     specifiers:
       '@formkit/auto-animate': 1.0.0-beta.1
       '@solid-primitives/scheduled': ^1.0.0
+      '@types/uuid': ^8.3.4
       autoprefixer: ^10.4.7
       daisyui: ^2.19.0
       hex-to-hsl: ^1.0.2
@@ -39,6 +40,7 @@ importers:
       solid-js: ^1.4.7
       tailwindcss: ^3.1.6
       telegram-webapp-solid: ^0.5.0
+      uuid: ^8.3.2
       vite: ^3.0.0
       vite-plugin-solid: ^2.2.6
       vite-plugin-solid-svg: ^0.2.0
@@ -50,7 +52,9 @@ importers:
       solid-app-router: 0.4.1_solid-js@1.4.7
       solid-js: 1.4.7
       telegram-webapp-solid: 0.5.0
+      uuid: 8.3.2
     devDependencies:
+      '@types/uuid': 8.3.4
       autoprefixer: 10.4.7_postcss@8.4.14
       daisyui: 2.19.0_ugi4xkrfysqkt4c4y6hkyfj344
       hex-to-hsl: 1.0.2
@@ -1515,6 +1519,10 @@ packages:
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
     dependencies:
       '@types/node': 18.0.4
+    dev: true
+
+  /@types/uuid/8.3.4:
+    resolution: {integrity: sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==}
     dev: true
 
   /acorn-node/1.8.2:
@@ -3668,6 +3676,11 @@ packages:
 
   /uuid/8.0.0:
     resolution: {integrity: sha512-jOXGuXZAWdsTH7eZLtyXMqUb9EcWMGZNbL9YcGBJl4MH4nrxHmZJhEHvyLFrkxo+28uLb/NYRcStH48fnD0Vzw==}
+    hasBin: true
+    dev: false
+
+  /uuid/8.3.2:
+    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
     dev: false
 

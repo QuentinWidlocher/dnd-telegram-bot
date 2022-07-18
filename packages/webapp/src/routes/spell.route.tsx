@@ -1,70 +1,71 @@
-import { Spell, spells, schoolsNames, SpellInGrimoire } from 'shared'
-import { RouteDataFunc, useNavigate, useRouteData } from 'solid-app-router'
-import { createEffect, createSignal, Resource, Show } from 'solid-js'
-import { createBackButtonSignal } from 'telegram-webapp-solid'
-import { Layout } from '../components/Layout'
-import { createDatabaseSignal } from '../utils/database-signal'
-import AddDatabaseScript from '../../node_modules/iconoir/icons/add-database-script.svg'
-import RemoveDatabaseScript from '../../node_modules/iconoir/icons/remove-database-script.svg'
+import { Spell, spells, schoolsNames, SpellInGrimoire } from "shared";
+import { RouteDataFunc, useNavigate, useRouteData } from "solid-app-router";
+import { createEffect, createSignal, Resource, Show } from "solid-js";
+import { createBackButtonSignal } from "telegram-webapp-solid";
+import { Layout } from "../components/Layout";
+import { createDatabaseSignal } from "../utils/database-signal";
+import AddDatabaseScript from "../../node_modules/iconoir/icons/add-database-script.svg";
+import RemoveDatabaseScript from "../../node_modules/iconoir/icons/remove-database-script.svg";
 
 export const spellRouteLoader: RouteDataFunc<Promise<Spell>> = async ({
   params,
 }) => {
-  return spells.find((spell) => spell.id === params.spellId)
-}
+  return spells.find((spell) => spell.id === params.spellId);
+};
 
 export default function SpellRoute() {
   const data = useRouteData<{
-    spell: Spell
-    grimoire: Resource<SpellInGrimoire[]>
-  }>()
+    spell: Spell;
+    grimoire: Resource<SpellInGrimoire[]>;
+  }>();
 
-  const [grimoire, setGrimoire] = createSignal<SpellInGrimoire[] | null>(null)
-  const [saving, setSaving] = createSignal(false)
+  const [grimoire, setGrimoire] = createSignal<SpellInGrimoire[] | null>(null);
+  const [saving, setSaving] = createSignal(false);
 
   createEffect(() => {
     if (!data.grimoire.loading && !data.grimoire.error) {
-      setGrimoire(data.grimoire())
+      setGrimoire(data.grimoire());
     }
-  })
+  });
 
   const spellIsAlreadyInGrimoire = () =>
-    grimoire()?.some((spell) => spell.id == data.spell.id)
+    grimoire()?.some((spell) => spell.id == data.spell.id);
 
-  const database = createDatabaseSignal()
+  const database = createDatabaseSignal();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const backButton = createBackButtonSignal({
     show: true,
     onClick: function goBack() {
-      backButton.setVisible(false)
-      navigate('/grimoire')
+      backButton.setVisible(false);
+      navigate("/grimoire");
     },
-  })
+  });
 
   async function addToGrimoire() {
-    setSaving(true)
+    setSaving(true);
     const updatedGrimoire = [
       ...grimoire().filter((spell) => spell.id != data.spell.id),
       {
         id: data.spell.id,
         name: data.spell.name,
         usage: 0,
+        custom: false,
       },
-    ]
-    await database.saveSpells(updatedGrimoire)
-    setGrimoire(updatedGrimoire)
-    setSaving(false)
+    ];
+    await database.saveSpells(updatedGrimoire);
+    setGrimoire(updatedGrimoire);
+    setSaving(false);
   }
 
   async function removeFromGrimoire() {
-    setSaving(true)
+    setSaving(true);
     const updatedGrimoire = grimoire().filter(
-      (spell) => spell.id != data.spell.id,
-    )
-    await database.saveSpells(updatedGrimoire)
-    setGrimoire(updatedGrimoire)
-    setSaving(false)
+      (spell) => spell.id != data.spell.id
+    );
+    await database.saveSpells(updatedGrimoire);
+    setGrimoire(updatedGrimoire);
+    setSaving(false);
   }
 
   return (
@@ -80,7 +81,7 @@ export default function SpellRoute() {
             </h1>
             <h2 class="text-primary">
               {schoolsNames[data.spell.school]}
-              {data.spell.isRitual ? ` (Rituel)` : ''}
+              {data.spell.isRitual ? ` (Rituel)` : ""}
             </h2>
           </div>
           <ul class="text-left my-5 w-full lg:w-2/3">
@@ -150,5 +151,5 @@ export default function SpellRoute() {
         </div>
       </Layout>
     </>
-  )
+  );
 }
