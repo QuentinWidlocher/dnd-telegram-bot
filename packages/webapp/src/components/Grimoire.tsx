@@ -2,7 +2,11 @@ import { SpellInGrimoire } from "shared";
 import { Link } from "solid-app-router";
 import { createEffect } from "solid-js";
 import { createStore } from "solid-js/store";
-import { createMainButtonSignal, HapticButton } from "telegram-webapp-solid";
+import {
+  createHapticImpactSignal,
+  createMainButtonSignal,
+  HapticButton,
+} from "telegram-webapp-solid";
 import { createBooleanTimeoutSignal } from "../utils/boolean-timeout-signal";
 import { SpellList } from "./SpellList";
 import HalfMoon from "../../node_modules/iconoir/icons/half-moon.svg";
@@ -21,10 +25,12 @@ export function Grimoire(props: GrimoireProps) {
   const mainButton = createMainButtonSignal({
     text: "Sauvegarder",
     show: false,
+    hapticForce: "medium",
     onClick: () => {
       props.onSaveClick(spells);
     },
   });
+  const hapticImpact = createHapticImpactSignal("medium");
 
   createEffect(() => {
     if (
@@ -42,14 +48,6 @@ export function Grimoire(props: GrimoireProps) {
       mainButton.setVisible(false);
     }
   });
-
-  function updateUsage(index: number, diff: number) {
-    setSpells(index, (spell) => ({
-      ...spell,
-      usage: Math.max(0, spell.usage + diff),
-    }));
-  }
-
   function addCustomSpell() {
     if (spells.some((s) => s.name == "")) {
       return;
@@ -79,8 +77,6 @@ export function Grimoire(props: GrimoireProps) {
       <SpellList
         spells={spells}
         showButtons
-        onPlusButtonClick={(i) => updateUsage(i, 1)}
-        onMinusButtonClick={(i) => updateUsage(i, -1)}
         emptyMessage="Aucun sort dans votre grimoire"
         onSpellChange={setSpells}
         onSpellDelete={(i) => {
@@ -97,7 +93,10 @@ export function Grimoire(props: GrimoireProps) {
           <Link
             href="/spell-search"
             class="btn btn-primary flex-1 space-x-2"
-            onClick={() => mainButton.setVisible(false)}
+            onClick={() => {
+              mainButton.setVisible(false);
+              hapticImpact();
+            }}
           >
             <span>Ajouter un sort</span>
             <AddDatabaseScript />

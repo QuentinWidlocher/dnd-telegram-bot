@@ -1,26 +1,24 @@
-import { AnySpell, SpellInGrimoire } from 'shared'
-import { For, mergeProps, ParentProps, Show } from 'solid-js'
-import { Spell as SpellComponent } from './Spell'
-import autoAnimate from '@formkit/auto-animate'
+import { AnySpell, SpellInGrimoire } from "shared";
+import { For, mergeProps, ParentProps, Show } from "solid-js";
+import { Spell as SpellComponent } from "./Spell";
+import autoAnimate from "@formkit/auto-animate";
 
 export type SpellListProps = {
-  spells: AnySpell[]
-  showButtons?: boolean
-  onPlusButtonClick?: (i: number) => void
-  onMinusButtonClick?: (i: number) => void
-  onSpellChange?: (index: number, spell: SpellInGrimoire) => void
-  onSpellDelete?: (index: number) => void
-  emptyMessage?: string
-}
+  spells: AnySpell[];
+  showButtons?: boolean;
+  onSpellChange?: (index: number, spell: SpellInGrimoire) => void;
+  onSpellDelete?: (index: number) => void;
+  emptyMessage?: string;
+};
 
 export function SpellList(props: ParentProps<SpellListProps>) {
   const mergedProps = mergeProps(
     {
       showButtons: false,
-      emptyMessage: 'Aucun sort à afficher',
+      emptyMessage: "Aucun sort à afficher",
     },
-    props,
-  )
+    props
+  );
 
   let list = (
     <ul class="flex-1 my-auto flex flex-col space-y-2 overflow-y-auto bg-base-300 -mx-5 p-5 shadow-inner">
@@ -28,8 +26,6 @@ export function SpellList(props: ParentProps<SpellListProps>) {
         {(spell: AnySpell, i) => (
           <SpellComponent
             spell={spell}
-            onMinusButtonClick={() => mergedProps.onMinusButtonClick(i())}
-            onPlusButtonClick={() => mergedProps.onPlusButtonClick(i())}
             onSpellChange={(spell: SpellInGrimoire) =>
               mergedProps.onSpellChange(i(), spell)
             }
@@ -45,9 +41,9 @@ export function SpellList(props: ParentProps<SpellListProps>) {
       </Show>
       {mergedProps.children}
     </ul>
-  )
+  );
 
-  autoAnimate(list as HTMLUListElement)
+  autoAnimate(list as HTMLUListElement);
 
-  return list
+  return list;
 }

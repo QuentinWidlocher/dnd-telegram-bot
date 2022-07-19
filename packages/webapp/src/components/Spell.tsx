@@ -20,8 +20,6 @@ import { createBooleanTimeoutSignal } from "../utils/boolean-timeout-signal";
 
 export type SpellProps = {
   spell: AnySpell;
-  onPlusButtonClick?: () => void;
-  onMinusButtonClick?: () => void;
   onSpellChange?: (spell: SpellInGrimoire) => void;
   onSpellDelete?: () => void;
   showButtons: boolean;
@@ -46,6 +44,7 @@ export function Spell(props: SpellProps) {
           class="bg-base-100 focus:bg-primary focus:bg-opacity-20 hover:bg-base-200 hover:text-primary-focus pl-5 overflow-hidden flex place-items-center place-content-between rounded-lg text-primary flex-1"
         >
           <Link
+            onFocusIn={() => hapticSelection()}
             href={`/spell/${props.spell.id}`}
             class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap"
           >
@@ -128,7 +127,12 @@ export function Spell(props: SpellProps) {
       <Show when={assertSpellInGrimoire(props.spell) && props.showButtons}>
         <HapticButton
           class="btn btn-primary-ghost btn-square"
-          onClick={() => props.onMinusButtonClick()}
+          onClick={() =>
+            props.onSpellChange({
+              ...props.spell,
+              usage: Math.max(0, props.spell.usage - 1),
+            })
+          }
           disabled={
             assertSpellInGrimoire(props.spell) && props.spell.usage <= 0
           }
@@ -137,7 +141,12 @@ export function Spell(props: SpellProps) {
         </HapticButton>
         <HapticButton
           class="btn btn-primary-ghost btn-square"
-          onClick={() => props.onPlusButtonClick()}
+          onClick={() =>
+            props.onSpellChange({
+              ...props.spell,
+              usage: Math.max(0, props.spell.usage + 1),
+            })
+          }
         >
           <Plus />
         </HapticButton>
