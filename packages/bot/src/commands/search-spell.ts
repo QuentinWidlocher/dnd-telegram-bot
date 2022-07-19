@@ -33,9 +33,14 @@ export const searchSpellCommand: Command = async (params, message) => {
 
   let { spells: spellsInGrimoire = [] } = await retreive(message.chat.id);
 
+  const totalSpells = [
+    ...spells,
+    ...spellsInGrimoire.filter((s) => spells.every((s2) => s2.id != s.id)),
+  ];
+
   if (params.includes("id:")) {
     const [, id] = /id:([a-z-0-9]*)/.exec(params) ?? [];
-    result = [...spells, ...spellsInGrimoire].filter((s) => s.id == id);
+    result = totalSpells.filter((s) => s.id == id);
   } else {
     result = searchSpellByName(params);
   }
@@ -107,7 +112,7 @@ ${spell.higherLevel.replace(/<br>/g, "\n\n")}
       resultText = `*${spell.name}*`;
     }
 
-    if ([...spells, ...spellsInGrimoire].some((s) => s.id == spell.id)) {
+    if (totalSpells.some((s) => s.id == spell.id)) {
       return {
         text: resultText,
         params: createButtonGrid([
