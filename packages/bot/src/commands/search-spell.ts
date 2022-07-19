@@ -107,7 +107,7 @@ ${spell.higherLevel.replace(/<br>/g, "\n\n")}
       resultText = `*${spell.name}*`;
     }
 
-    if (spells.some((s) => s.id == spell.id)) {
+    if ([...spells, ...spellsInGrimoire].some((s) => s.id == spell.id)) {
       return {
         text: resultText,
         params: createButtonGrid([
