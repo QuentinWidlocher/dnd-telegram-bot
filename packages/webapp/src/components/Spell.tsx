@@ -9,7 +9,7 @@ import Plus from "../../node_modules/iconoir/icons/plus.svg";
 import Minus from "../../node_modules/iconoir/icons/minus.svg";
 import DeleteCircledOutline from "../../node_modules/iconoir/icons/delete-circled-outline.svg";
 import QuestionMarkCircle from "../../node_modules/iconoir/icons/question-mark-circle.svg";
-import { Show } from "solid-js";
+import { onMount, Show } from "solid-js";
 import {
   createHapticImpactSignal,
   createHapticSelectionSignal,
@@ -30,6 +30,29 @@ export function Spell(props: SpellProps) {
   const hapticImpact = createHapticImpactSignal("medium");
   const hapticSelection = createHapticSelectionSignal();
   const [confirmDelete, setConfirmDelete] = createBooleanTimeoutSignal();
+
+  const customNameInput = (
+    <input
+      type="text"
+      value={props.spell.name}
+      class="flex-1 input text-base pr-0 min-w-0 rounded-r-none"
+      onFocusIn={() => hapticSelection()}
+      onInput={(e) => {
+        props.onSpellChange({
+          ...(props.spell as SpellInGrimoire),
+          name: e.currentTarget.value,
+        });
+      }}
+    >
+      {props.spell.name}
+    </input>
+  );
+
+  onMount(() => {
+    if (props.spell.custom && props.spell.name == "") {
+      (customNameInput as HTMLInputElement).focus();
+    }
+  });
 
   return (
     <li class="flex w-full space-x-2">
@@ -68,20 +91,7 @@ export function Spell(props: SpellProps) {
       </Show>
       <Show when={assertSpellInGrimoire(props.spell) && props.spell.custom}>
         <div class="bg-base-100 flex min-w-0 place-items-center place-content-between rounded-lg text-primary flex-1">
-          <input
-            type="text"
-            value={props.spell.name}
-            class="flex-1 input text-base pr-0 min-w-0 rounded-r-none"
-            onFocusIn={() => hapticSelection()}
-            onInput={(e) => {
-              props.onSpellChange({
-                ...(props.spell as SpellInGrimoire),
-                name: e.currentTarget.value,
-              });
-            }}
-          >
-            {props.spell.name}
-          </input>
+          {customNameInput}
           <div
             class="tooltip tooltip-error"
             classList={{ "tooltip-open": confirmDelete() }}

@@ -1,7 +1,7 @@
 import { Spell, spells, schoolsNames, SpellInGrimoire } from "shared";
 import { RouteDataFunc, useNavigate, useRouteData } from "solid-app-router";
 import { createEffect, createSignal, Resource, Show } from "solid-js";
-import { createBackButtonSignal } from "telegram-webapp-solid";
+import { createBackButtonSignal, HapticButton } from "telegram-webapp-solid";
 import { Layout } from "../components/Layout";
 import { createDatabaseSignal } from "../utils/database-signal";
 import AddDatabaseScript from "../../node_modules/iconoir/icons/add-database-script.svg";
@@ -127,7 +127,7 @@ export default function SpellRoute() {
           <Show
             when={grimoire() && spellIsAlreadyInGrimoire()}
             fallback={
-              <button
+              <HapticButton
                 class="btn btn-primary w-full mt-2 space-x-2"
                 classList={{ loading: saving() }}
                 onClick={() => addToGrimoire()}
@@ -135,10 +135,10 @@ export default function SpellRoute() {
               >
                 {saving() ? null : <AddDatabaseScript />}
                 <span>Ajouter au grimoire</span>
-              </button>
+              </HapticButton>
             }
           >
-            <button
+            <HapticButton
               class="btn btn-error-ghost w-full mt-2 space-x-2"
               classList={{ loading: saving() }}
               onClick={() => removeFromGrimoire()}
@@ -146,7 +146,7 @@ export default function SpellRoute() {
             >
               {saving() ? null : <RemoveDatabaseScript />}
               <span>Retirer du grimoire</span>
-            </button>
+            </HapticButton>
           </Show>
         </div>
       </Layout>
