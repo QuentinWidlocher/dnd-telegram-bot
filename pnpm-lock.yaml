@@ -4,10 +4,15 @@ importers:
 
   .:
     specifiers:
+      '@types/uuid': ^8.3.4
       pnpm: ^7.5.1
       typegram: ^3.10.0
       typescript: ^4.7.4
+      uuid: ^8.3.2
+    dependencies:
+      uuid: 8.3.2
     devDependencies:
+      '@types/uuid': 8.3.4
       pnpm: 7.5.1
       typegram: 3.10.0
       typescript: 4.7.4
@@ -29,7 +34,6 @@ importers:
     specifiers:
       '@formkit/auto-animate': 1.0.0-beta.1
       '@solid-primitives/scheduled': ^1.0.0
-      '@types/uuid': ^8.3.4
       autoprefixer: ^10.4.7
       daisyui: ^2.19.0
       hex-to-hsl: ^1.0.2
@@ -40,7 +44,6 @@ importers:
       solid-js: ^1.4.7
       tailwindcss: ^3.1.6
       telegram-webapp-solid: ^0.5.0
-      uuid: ^8.3.2
       vite: ^3.0.0
       vite-plugin-solid: ^2.2.6
       vite-plugin-solid-svg: ^0.2.0
@@ -52,9 +55,7 @@ importers:
       solid-app-router: 0.4.1_solid-js@1.4.7
       solid-js: 1.4.7
       telegram-webapp-solid: 0.5.0
-      uuid: 8.3.2
     devDependencies:
-      '@types/uuid': 8.3.4
       autoprefixer: 10.4.7_postcss@8.4.14
       daisyui: 2.19.0_ugi4xkrfysqkt4c4y6hkyfj344
       hex-to-hsl: 1.0.2

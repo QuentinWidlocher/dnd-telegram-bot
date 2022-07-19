@@ -8,6 +8,10 @@
   "devDependencies": {
     "pnpm": "^7.5.1",
     "typegram": "^3.10.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "@types/uuid": "^8.3.4"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2"
   }
 }

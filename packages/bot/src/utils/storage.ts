@@ -1,4 +1,5 @@
 import DB, { GetItemOutput } from "aws-sdk/clients/dynamodb";
+import { SpellInGrimoire } from "shared";
 
 const db = new DB({
   region: "us-east-1",
@@ -9,11 +10,7 @@ const db = new DB({
 });
 
 export type UserData = {
-  spells: {
-    id: string;
-    name: string;
-    usage: number;
-  }[];
+  spells: SpellInGrimoire[];
 };
 
 export async function store(userId: string | number, data: Partial<UserData>) {
