@@ -46,7 +46,7 @@ export function Spell(props: SpellProps) {
           <Link
             onFocusIn={() => hapticSelection()}
             href={`/spell/${props.spell.id}`}
-            class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap"
+            class="flex-1 overflow-hidden text-ellipsis whitespace-nowrap py-3"
           >
             {props.spell.name}
           </Link>
