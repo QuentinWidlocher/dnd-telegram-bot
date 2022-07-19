@@ -99,6 +99,7 @@ export function Spell(props: SpellProps) {
                   props.onSpellDelete();
                   setConfirmDelete(false);
                 } else {
+                  hapticSelection();
                   setConfirmDelete(true);
                 }
               }}
@@ -133,9 +134,7 @@ export function Spell(props: SpellProps) {
               usage: Math.max(0, props.spell.usage - 1),
             })
           }
-          disabled={
-            assertSpellInGrimoire(props.spell) && props.spell.usage <= 0
-          }
+          disabled={props.spell.usage <= 0}
         >
           <Minus />
         </HapticButton>
@@ -144,7 +143,7 @@ export function Spell(props: SpellProps) {
           onClick={() =>
             props.onSpellChange({
               ...props.spell,
-              usage: Math.max(0, props.spell.usage + 1),
+              usage: props.spell.usage + 1,
             })
           }
         >

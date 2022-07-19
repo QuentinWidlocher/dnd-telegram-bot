@@ -104,7 +104,7 @@ export function Grimoire(props: GrimoireProps) {
         </li>
       </SpellList>
       <div class="flex flex-col mt-5">
-        <HapticButton
+        <button
           class="btn space-x-2"
           classList={{
             "btn-error": confirmRest(),
@@ -112,6 +112,7 @@ export function Grimoire(props: GrimoireProps) {
           }}
           onClick={() => {
             if (confirmRest()) {
+              hapticImpact();
               setSpells(
                 spells.map((spell) => ({
                   ...spell,
@@ -120,7 +121,6 @@ export function Grimoire(props: GrimoireProps) {
               );
               setConfirmRest(false);
             } else {
-              console.log(spells);
               setConfirmRest(true);
             }
           }}
@@ -128,7 +128,7 @@ export function Grimoire(props: GrimoireProps) {
         >
           <span>{confirmRest() ? "Appuyez pour valider" : "Se reposer"}</span>
           <HalfMoon />
-        </HapticButton>
+        </button>
         <span class="text-hint text-center text-sm w-full mt-2">
           Un repos remet tous les compteurs à zéro
         </span>
