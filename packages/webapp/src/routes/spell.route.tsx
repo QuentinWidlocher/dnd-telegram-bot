@@ -1,7 +1,11 @@
 import { Spell, spells, schoolsNames, SpellInGrimoire } from "shared";
 import { RouteDataFunc, useNavigate, useRouteData } from "solid-app-router";
 import { createEffect, createSignal, Resource, Show } from "solid-js";
-import { createBackButtonSignal, HapticButton } from "telegram-webapp-solid";
+import {
+  createBackButtonSignal,
+  createHapticImpactSignal,
+  HapticButton,
+} from "telegram-webapp-solid";
 import { Layout } from "../components/Layout";
 import { createDatabaseSignal } from "../utils/database-signal";
 import AddDatabaseScript from "../../node_modules/iconoir/icons/add-database-script.svg";
@@ -42,7 +46,10 @@ export default function SpellRoute() {
     },
   });
 
+  const hapticImpact = createHapticImpactSignal("medium");
+
   async function addToGrimoire() {
+    hapticImpact();
     setSaving(true);
     const updatedGrimoire = [
       ...grimoire().filter((spell) => spell.id != data.spell.id),
@@ -59,6 +66,7 @@ export default function SpellRoute() {
   }
 
   async function removeFromGrimoire() {
+    hapticImpact();
     setSaving(true);
     const updatedGrimoire = grimoire().filter(
       (spell) => spell.id != data.spell.id
@@ -127,7 +135,7 @@ export default function SpellRoute() {
           <Show
             when={grimoire() && spellIsAlreadyInGrimoire()}
             fallback={
-              <HapticButton
+              <button
                 class="btn btn-primary w-full mt-2 space-x-2"
                 classList={{ loading: saving() }}
                 onClick={() => addToGrimoire()}
@@ -135,10 +143,10 @@ export default function SpellRoute() {
               >
                 {saving() ? null : <AddDatabaseScript />}
                 <span>Ajouter au grimoire</span>
-              </HapticButton>
+              </button>
             }
           >
-            <HapticButton
+            <button
               class="btn btn-error-ghost w-full mt-2 space-x-2"
               classList={{ loading: saving() }}
               onClick={() => removeFromGrimoire()}
@@ -146,7 +154,7 @@ export default function SpellRoute() {
             >
               {saving() ? null : <RemoveDatabaseScript />}
               <span>Retirer du grimoire</span>
-            </HapticButton>
+            </button>
           </Show>
         </div>
       </Layout>
