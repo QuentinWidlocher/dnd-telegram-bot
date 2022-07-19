@@ -134,7 +134,9 @@ const removeFromGrimoireCommand: Command = async (params, message) => {
     };
   }
 
-  let foundSpells = getSpellFromParams(args.join(" "));
+  let data = await retreive(message.from.id);
+
+  let foundSpells = getSpellFromParams(args.join(" "), data.spells);
 
   if (foundSpells.length > 1) {
     return {
@@ -152,7 +154,6 @@ const removeFromGrimoireCommand: Command = async (params, message) => {
 
   let spell = foundSpells[0];
 
-  let data = await retreive(message.from.id);
   data = {
     ...data,
     spells: data.spells?.filter((s) => s.id != spell.id) ?? [],
