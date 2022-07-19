@@ -126,29 +126,32 @@ export function Spell(props: SpellProps) {
         </div>
       </Show>
       <Show when={assertSpellInGrimoire(props.spell) && props.showButtons}>
-        <HapticButton
+        <button
           class="btn btn-primary-ghost btn-square"
-          onClick={() =>
+          onClick={() => {
+            if (props.spell.usage > 0) {
+              hapticImpact();
+            }
             props.onSpellChange({
               ...props.spell,
               usage: Math.max(0, props.spell.usage - 1),
-            })
-          }
-          disabled={props.spell.usage <= 0}
+            });
+          }}
         >
           <Minus />
-        </HapticButton>
-        <HapticButton
+        </button>
+        <button
           class="btn btn-primary-ghost btn-square"
-          onClick={() =>
+          onClick={() => {
             props.onSpellChange({
               ...props.spell,
               usage: props.spell.usage + 1,
-            })
-          }
+            });
+            hapticImpact();
+          }}
         >
           <Plus />
-        </HapticButton>
+        </button>
       </Show>
     </li>
   );
