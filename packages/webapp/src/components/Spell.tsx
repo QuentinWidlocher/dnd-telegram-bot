@@ -3,28 +3,35 @@ import {
   assertSpellInGrimoire,
   assertSpell,
   SpellInGrimoire,
-} from 'shared'
-import { Link } from 'solid-app-router'
-import Plus from '../../node_modules/iconoir/icons/plus.svg'
-import Minus from '../../node_modules/iconoir/icons/minus.svg'
-import DeleteCircledOutline from '../../node_modules/iconoir/icons/delete-circled-outline.svg'
-import QuestionMarkCircle from '../../node_modules/iconoir/icons/question-mark-circle.svg'
-import { Show } from 'solid-js'
-import { createMainButtonSignal } from 'telegram-webapp-solid'
-import { createBooleanTimeoutSignal } from '../utils/boolean-timeout-signal'
+} from "shared";
+import { Link } from "solid-app-router";
+import Plus from "../../node_modules/iconoir/icons/plus.svg";
+import Minus from "../../node_modules/iconoir/icons/minus.svg";
+import DeleteCircledOutline from "../../node_modules/iconoir/icons/delete-circled-outline.svg";
+import QuestionMarkCircle from "../../node_modules/iconoir/icons/question-mark-circle.svg";
+import { Show } from "solid-js";
+import {
+  createHapticImpactSignal,
+  createHapticSelectionSignal,
+  createMainButtonSignal,
+  HapticButton,
+} from "telegram-webapp-solid";
+import { createBooleanTimeoutSignal } from "../utils/boolean-timeout-signal";
 
 export type SpellProps = {
-  spell: AnySpell
-  onPlusButtonClick?: () => void
-  onMinusButtonClick?: () => void
-  onSpellChange?: (spell: SpellInGrimoire) => void
-  onSpellDelete?: () => void
-  showButtons: boolean
-}
+  spell: AnySpell;
+  onPlusButtonClick?: () => void;
+  onMinusButtonClick?: () => void;
+  onSpellChange?: (spell: SpellInGrimoire) => void;
+  onSpellDelete?: () => void;
+  showButtons: boolean;
+};
 
 export function Spell(props: SpellProps) {
-  const mainButton = createMainButtonSignal({})
-  const [confirmDelete, setConfirmDelete] = createBooleanTimeoutSignal()
+  const mainButton = createMainButtonSignal({});
+  const hapticImpact = createHapticImpactSignal("medium");
+  const hapticSelection = createHapticSelectionSignal();
+  const [confirmDelete, setConfirmDelete] = createBooleanTimeoutSignal();
 
   return (
     <li class="flex w-full space-x-2">
@@ -49,6 +56,7 @@ export function Spell(props: SpellProps) {
               type="number"
               class="input m-0 rounded-l-none w-10 px-0 number-spinner-none font-bold text-center"
               value={(props.spell as SpellInGrimoire).usage}
+              onFocusIn={() => hapticSelection()}
               onInput={(e) =>
                 props.onSpellChange({
                   ...props.spell,
@@ -65,32 +73,34 @@ export function Spell(props: SpellProps) {
             type="text"
             value={props.spell.name}
             class="flex-1 input text-base pr-0 min-w-0 rounded-r-none"
+            onFocusIn={() => hapticSelection()}
             onInput={(e) => {
               props.onSpellChange({
                 ...(props.spell as SpellInGrimoire),
                 name: e.currentTarget.value,
-              })
+              });
             }}
           >
             {props.spell.name}
           </input>
           <div
             class="tooltip tooltip-error"
-            classList={{ 'tooltip-open': confirmDelete() }}
+            classList={{ "tooltip-open": confirmDelete() }}
             data-tip="Appuyez deux fois pour supprimer"
           >
             <button
               class="btn btn-square btn-error-ghost rounded-none"
               classList={{
-                'btn-error': confirmDelete(),
-                'btn-error-ghost': !confirmDelete(),
+                "btn-error": confirmDelete(),
+                "btn-error-ghost": !confirmDelete(),
               }}
               onClick={() => {
                 if (confirmDelete()) {
-                  props.onSpellDelete()
-                  setConfirmDelete(false)
+                  hapticImpact();
+                  props.onSpellDelete();
+                  setConfirmDelete(false);
                 } else {
-                  setConfirmDelete(true)
+                  setConfirmDelete(true);
                 }
               }}
             >
@@ -104,6 +114,7 @@ export function Spell(props: SpellProps) {
           <input
             type="number"
             class="input m-0 rounded-l-none w-10 px-0 number-spinner-none font-bold text-center"
+            onFocusIn={() => hapticSelection()}
             value={(props.spell as SpellInGrimoire).usage}
             onInput={(e) =>
               props.onSpellChange({
@@ -115,7 +126,7 @@ export function Spell(props: SpellProps) {
         </div>
       </Show>
       <Show when={assertSpellInGrimoire(props.spell) && props.showButtons}>
-        <button
+        <HapticButton
           class="btn btn-primary-ghost btn-square"
           onClick={() => props.onMinusButtonClick()}
           disabled={
@@ -123,14 +134,14 @@ export function Spell(props: SpellProps) {
           }
         >
           <Minus />
-        </button>
-        <button
+        </HapticButton>
+        <HapticButton
           class="btn btn-primary-ghost btn-square"
           onClick={() => props.onPlusButtonClick()}
         >
           <Plus />
-        </button>
+        </HapticButton>
       </Show>
     </li>
-  )
+  );
 }
