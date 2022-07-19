@@ -183,16 +183,25 @@ const listGrimoireCommand: Command = async (params, message) => {
   return {
     text: `Votre grimoire :`,
     params: createButtonGrid([
-      ...spells.map((spell) => [
-        {
-          label: `${spell.name} (${spell.usage})`,
-          command: `/spell id:${spell.id}`,
-        },
-        {
-          label: "Utiliser",
-          command: `/grimoire use id:${spell.id}`,
-        },
-      ]),
+      ...spells.map(
+        (spell) =>
+          [
+            {
+              label: `${spell.name} (${spell.usage})`,
+              command: spell.custom ? "" : `/spell id:${spell.id}`,
+            },
+            {
+              label: "Utiliser",
+              command: `/grimoire use id:${spell.id}`,
+            },
+            spell.custom
+              ? {
+                  label: "Supprimer",
+                  command: `/grimoire remove id:${spell.id}`,
+                }
+              : undefined,
+          ].filter(Boolean) as { label: string; command: string }[]
+      ),
       [
         {
           label: "Se reposer",
