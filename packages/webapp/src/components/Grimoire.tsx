@@ -1,6 +1,6 @@
 import { SpellInGrimoire } from "shared";
 import { Link } from "solid-app-router";
-import { createEffect } from "solid-js";
+import { createEffect, onCleanup } from "solid-js";
 import { createStore } from "solid-js/store";
 import {
   createHapticImpactSignal,
@@ -16,6 +16,7 @@ import { v4 as uuidv4 } from "uuid";
 export type GrimoireProps = {
   spells: SpellInGrimoire[];
   onSaveClick: (spells: SpellInGrimoire[]) => void;
+  onMainButtonClick: (spells: SpellInGrimoire[]) => void;
 };
 
 export function Grimoire(props: GrimoireProps) {
@@ -27,10 +28,14 @@ export function Grimoire(props: GrimoireProps) {
     show: false,
     hapticForce: "medium",
     onClick: () => {
-      props.onSaveClick(spells);
+      props.onMainButtonClick(spells);
     },
   });
   const hapticImpact = createHapticImpactSignal("medium");
+
+  onCleanup(() => {
+    props.onSaveClick(spells);
+  });
 
   createEffect(() => {
     if (
