@@ -2,6 +2,7 @@ import { AnySpell, SpellInGrimoire } from "shared";
 import { For, mergeProps, ParentProps, Show } from "solid-js";
 import { Spell as SpellComponent } from "./Spell";
 import autoAnimate from "@formkit/auto-animate";
+import DatabaseScript from "../../node_modules/iconoir/icons/database-script.svg";
 
 export type SpellListProps = {
   spells: AnySpell[];
@@ -35,7 +36,10 @@ export function SpellList(props: ParentProps<SpellListProps>) {
         )}
       </For>
       <Show when={mergedProps.spells?.length <= 0}>
-        <li class="text-center text-hint my-auto">
+        <li class="text-center text-hint my-auto overflow-x-hidden py-5">
+          <div class="flex justify-center scale-[300%] mb-10">
+            <DatabaseScript />
+          </div>
           {mergedProps.emptyMessage}
         </li>
       </Show>
