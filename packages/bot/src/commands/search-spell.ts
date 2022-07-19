@@ -5,7 +5,13 @@ import {
   createButtonHorizontalList,
 } from "../utils/commands";
 import type { InlineKeyboardButton } from "typegram";
-import { schoolsNames, searchSpellByName, Spell, spells } from "shared";
+import {
+  schoolsNames,
+  searchSpellByName,
+  AnySpell,
+  spells,
+  assertSpell,
+} from "shared";
 
 export const searchSpellCommand: Command = async (params, message) => {
   if (!params) {
@@ -14,7 +20,7 @@ export const searchSpellCommand: Command = async (params, message) => {
     };
   }
 
-  let result: Spell[] = [];
+  let result: AnySpell[] = [];
 
   let page = 0;
   let spellsPerPage = 10;
@@ -25,9 +31,11 @@ export const searchSpellCommand: Command = async (params, message) => {
     params = params.replace(`page:${parsedPage}`, "").trim();
   }
 
+  let { spells: spellsInGrimoire = [] } = await retreive(message.chat.id);
+
   if (params.includes("id:")) {
     const [, id] = /id:([a-z-0-9]*)/.exec(params) ?? [];
-    result = spells.filter((s) => s.id == id);
+    result = [...spells, ...spellsInGrimoire].filter((s) => s.id == id);
   } else {
     result = searchSpellByName(params);
   }
@@ -58,10 +66,11 @@ export const searchSpellCommand: Command = async (params, message) => {
     }
 
     return {
-      text: `Résultat de la recherche pour : *${params}*${result.length > spellsPerPage
+      text: `Résultat de la recherche pour : *${params}*${
+        result.length > spellsPerPage
           ? `\nPage ${page + 1}/${Math.ceil(result.length / spellsPerPage)}`
           : ""
-        }`,
+      }`,
       params: {
         reply_markup: {
           inline_keyboard: [...buttons.map((b) => [b]), pageButtons],
@@ -70,8 +79,12 @@ export const searchSpellCommand: Command = async (params, message) => {
     };
   } else if (result.length > 0) {
     const [spell] = result;
-    let resultText = `
-*${spell.name} (${spell.isRitual ? "Rituel de " : ""}${schoolsNames[spell.school]
+    let resultText = "";
+
+    if (assertSpell(spell)) {
+      resultText = `
+*${spell.name} (${spell.isRitual ? "Rituel de " : ""}${
+        schoolsNames[spell.school]
       })*
 Sort de niveau ${spell.level}
 
@@ -81,16 +94,18 @@ Sort de niveau ${spell.level}
 *Composantes :* ${spell.components}
 
 ${spell.description.replace(/<br>/g, "\n\n")}
-${spell.higherLevel != undefined
-        ? `
+${
+  spell.higherLevel != undefined
+    ? `
 
 *Au niveau supérieur :*
 ${spell.higherLevel.replace(/<br>/g, "\n\n")}
 `
-        : ""
-      }`.trim();
-
-    let { spells = [] } = await retreive(message.chat.id);
+    : ""
+}`.trim();
+    } else {
+      resultText = `*${spell.name}*`;
+    }
 
     if (spells.some((s) => s.id == spell.id)) {
       return {
