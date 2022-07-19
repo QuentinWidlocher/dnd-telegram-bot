@@ -188,7 +188,7 @@ const listGrimoireCommand: Command = async (params, message) => {
           [
             {
               label: `${spell.name} (${spell.usage})`,
-              command: spell.custom ? "" : `/spell id:${spell.id}`,
+              command: spell.custom ? "/grimoire" : `/spell id:${spell.id}`,
             },
             {
               label: "Utiliser",
