@@ -1,6 +1,6 @@
 import hexToHsl from "hex-to-hsl";
 import { ParentProps } from "solid-js";
-import { StableContainer } from "telegram-webapp-solid";
+import { createThemeSignal, StableContainer } from "telegram-webapp-solid";
 
 function hexToCssHsl(hex: string) {
   if (!hex) return;
@@ -21,15 +21,7 @@ function hexToLighterCssHsl(hex: string) {
 }
 
 export function Layout(props: ParentProps) {
-  const theme = () => ({
-    colorScheme: "dark",
-    themeParams: {
-      button_color: "#5500DD",
-      button_text_color: "#FFFFFF",
-      bg_color: "#111111",
-      text_color: "#FFFFFF",
-    },
-  }); // createThemeSignal()
+  const theme = createThemeSignal();
 
   return (
     <StableContainer
