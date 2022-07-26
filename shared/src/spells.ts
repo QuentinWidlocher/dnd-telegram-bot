@@ -32,7 +32,7 @@ export const schoolsNames: {
 export function assertSpellInGrimoire(
   spell: AnySpell
 ): spell is SpellInGrimoire {
-  return "usage" in spell && "custom" in spell && spell.custom;
+  return "usage" in spell;
 }
 
 export function assertSpell(spell: AnySpell): spell is Spell {
