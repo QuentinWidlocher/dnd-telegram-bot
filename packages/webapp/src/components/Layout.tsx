@@ -1,9 +1,6 @@
 import hexToHsl from "hex-to-hsl";
 import { ParentProps } from "solid-js";
-import {
-  createThemeSignal as createRealThemeSignal,
-  StableContainer,
-} from "telegram-webapp-solid";
+import { createThemeSignal, StableContainer } from "telegram-webapp-solid";
 
 function hexToCssHsl(hex: string, luminosityMult: number = 1) {
   if (!hex) return;
@@ -15,22 +12,6 @@ const hexToDarkerCssHsl = (hex: string) => hexToCssHsl(hex, 0.8);
 const hexToLighterCssHsl = (hex: string) => hexToCssHsl(hex, 1.1);
 const hexToFocusCssHsl = (hex: string, mode: string) =>
   mode == "dark" ? hexToLighterCssHsl(hex) : hexToDarkerCssHsl(hex);
-
-function createThemeSignal() {
-  if (import.meta.env.NODE_ENV === "production") {
-    return createRealThemeSignal();
-  } else {
-    return () => ({
-      colorScheme: "dark",
-      themeParams: {
-        bg_color: "#212121",
-        text_color: "#ffffff",
-        button_color: "#8774e1",
-        button_text_color: "#ffffff",
-      },
-    });
-  }
-}
 
 export function Layout(props: ParentProps) {
   const theme = createThemeSignal();
