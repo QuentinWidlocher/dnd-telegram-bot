@@ -34,8 +34,14 @@ export function Layout(props: ParentProps) {
         ),
         "--nc": hexToCssHsl(theme()?.themeParams?.text_color),
         "--b1": hexToCssHsl(theme()?.themeParams?.bg_color),
-        "--b2": hexToCssHsl(theme()?.themeParams?.bg_color, 0.75),
-        "--b3": hexToCssHsl(theme()?.themeParams?.bg_color, 0.5),
+        "--b2": hexToCssHsl(
+          theme()?.themeParams?.bg_color,
+          theme()?.colorScheme == "dark" ? 0.75 : 0.9
+        ),
+        "--b3": hexToCssHsl(
+          theme()?.themeParams?.bg_color,
+          theme()?.colorScheme == "dark" ? 0.5 : 0.8
+        ),
         "--bc": hexToDarkerCssHsl(theme()?.themeParams?.text_color),
       }}
     >
