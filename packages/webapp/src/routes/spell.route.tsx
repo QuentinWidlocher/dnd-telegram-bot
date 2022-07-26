@@ -129,7 +129,10 @@ export default function SpellRoute() {
           </ul>
           <p
             class="text-left flex-grow overflow-y-auto"
-            innerHTML={data.spell.description}
+            innerHTML={
+              data.spell.description +
+              (data.spell.higherLevel ? `<hr>${data.spell.higherLevel}` : "")
+            }
           ></p>
           <Show
             when={grimoire() && spellIsAlreadyInGrimoire()}
