@@ -24,7 +24,7 @@ export default function SpellSearchRoute() {
   const inputRef = (
     <input
       type="text"
-      class="input input-bordered input-primary w-full mt-5"
+      class="input input-bordered input-primary w-full mt-5 placeholder:text-hint"
       id="search"
       placeholder="Chercher un sort"
       onInput={(e) => debouncedSetSearchQuery(e.currentTarget.value)}

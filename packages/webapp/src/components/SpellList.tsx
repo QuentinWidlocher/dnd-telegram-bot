@@ -22,7 +22,7 @@ export function SpellList(props: ParentProps<SpellListProps>) {
   );
 
   let list = (
-    <ul class="flex-1 my-auto flex flex-col space-y-2 overflow-y-auto bg-base-300 -mx-5 p-5 shadow-inner">
+    <ul class="flex-1 my-auto flex flex-col space-y-2 overflow-y-auto bg-base-200 -mx-5 p-5 shadow-inner">
       <For each={mergedProps.spells}>
         {(spell: AnySpell, i) => (
           <SpellComponent
