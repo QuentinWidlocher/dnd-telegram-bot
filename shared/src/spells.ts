@@ -13,11 +13,11 @@ export function searchSpellByName(name: string): Spell[] {
 }
 
 export function fuzzySearchRegexTemplate(words: string[]) {
-  return `(?=[a-z\u00E0-\u00FC]*(${words.join('|')})[a-z\u00E0-\u00FC]*)`;
+  return `(?=[a-z\u00E0-\u00FC]*(${words.join("|")})[a-z\u00E0-\u00FC]*)`;
 }
 
 export const schoolsNames: {
-  [k in Spell['school']]: string;
+  [k in Spell["school"]]: string;
 } = {
   abjuration: "Abjuration",
   conjuration: "Invocation",
@@ -29,8 +29,10 @@ export const schoolsNames: {
   transmutation: "Transmutation",
 } as const;
 
-export function assertSpellInGrimoire(spell: AnySpell): spell is SpellInGrimoire {
-  return 'usage' in spell
+export function assertSpellInGrimoire(
+  spell: AnySpell
+): spell is SpellInGrimoire {
+  return "usage" in spell && "custom" in spell && spell.custom;
 }
 
 export function assertSpell(spell: AnySpell): spell is Spell {

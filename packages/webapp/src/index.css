@@ -40,6 +40,6 @@ input.number-spinner-none::-webkit-inner-spin-button {
   margin: 0;
 }
 
-input.number-spinner-none[type=number] {
+input.number-spinner-none[type="number"] {
   -moz-appearance: textfield;
 }

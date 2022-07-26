@@ -1,15 +1,14 @@
-import { Spell, spells, schoolsNames, SpellInGrimoire } from "shared";
+import { schoolsNames, Spell, SpellInGrimoire, spells } from "shared";
 import { RouteDataFunc, useNavigate, useRouteData } from "solid-app-router";
 import { createEffect, createSignal, Resource, Show } from "solid-js";
 import {
   createBackButtonSignal,
   createHapticImpactSignal,
-  HapticButton,
 } from "telegram-webapp-solid";
-import { Layout } from "../components/Layout";
-import { createDatabaseSignal } from "../utils/database-signal";
 import AddDatabaseScript from "../../node_modules/iconoir/icons/add-database-script.svg";
 import RemoveDatabaseScript from "../../node_modules/iconoir/icons/remove-database-script.svg";
+import { Layout } from "../components/Layout";
+import { createDatabaseSignal } from "../utils/database-signal";
 
 export const spellRouteLoader: RouteDataFunc<Promise<Spell>> = async ({
   params,
@@ -129,7 +128,7 @@ export default function SpellRoute() {
             </li>
           </ul>
           <p
-            class="text-left text-paper-900 flex-grow overflow-y-auto"
+            class="text-left flex-grow overflow-y-auto"
             innerHTML={data.spell.description}
           ></p>
           <Show

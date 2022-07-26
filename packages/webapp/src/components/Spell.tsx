@@ -1,21 +1,20 @@
 import {
   AnySpell,
-  assertSpellInGrimoire,
   assertSpell,
+  assertSpellInGrimoire,
   SpellInGrimoire,
 } from "shared";
 import { Link } from "solid-app-router";
-import Plus from "../../node_modules/iconoir/icons/plus.svg";
-import Minus from "../../node_modules/iconoir/icons/minus.svg";
-import DeleteCircledOutline from "../../node_modules/iconoir/icons/delete-circled-outline.svg";
-import QuestionMarkCircle from "../../node_modules/iconoir/icons/question-mark-circle.svg";
 import { onMount, Show } from "solid-js";
 import {
   createHapticImpactSignal,
   createHapticSelectionSignal,
   createMainButtonSignal,
-  HapticButton,
 } from "telegram-webapp-solid";
+import DeleteCircledOutline from "../../node_modules/iconoir/icons/delete-circled-outline.svg";
+import Minus from "../../node_modules/iconoir/icons/minus.svg";
+import Plus from "../../node_modules/iconoir/icons/plus.svg";
+import QuestionMarkCircle from "../../node_modules/iconoir/icons/question-mark-circle.svg";
 import { createBooleanTimeoutSignal } from "../utils/boolean-timeout-signal";
 
 export type SpellProps = {
@@ -49,7 +48,7 @@ export function Spell(props: SpellProps) {
   );
 
   onMount(() => {
-    if (props.spell.custom && props.spell.name == "") {
+    if (assertSpellInGrimoire(props.spell) && props.spell.name == "") {
       (customNameInput as HTMLInputElement).focus();
     }
   });
@@ -139,6 +138,10 @@ export function Spell(props: SpellProps) {
         <button
           class="btn btn-primary-ghost btn-square"
           onClick={() => {
+            if (!assertSpellInGrimoire(props.spell)) {
+              return;
+            }
+
             if (props.spell.usage > 0) {
               hapticImpact();
             }
@@ -153,6 +156,10 @@ export function Spell(props: SpellProps) {
         <button
           class="btn btn-primary-ghost btn-square"
           onClick={() => {
+            if (!assertSpellInGrimoire(props.spell)) {
+              return;
+            }
+
             props.onSpellChange({
               ...props.spell,
               usage: props.spell.usage + 1,
