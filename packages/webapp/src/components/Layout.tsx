@@ -14,7 +14,7 @@ const hexToFocusCssHsl = (hex: string, mode: string) =>
   mode == "dark" ? hexToLighterCssHsl(hex) : hexToDarkerCssHsl(hex);
 
 export function Layout(props: ParentProps) {
-  const theme = createThemeSignal();
+  const { theme } = createThemeSignal();
 
   return (
     <StableContainer
