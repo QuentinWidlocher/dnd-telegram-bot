@@ -2,7 +2,7 @@ import { SpellInGrimoire } from "shared";
 import { useRouteData } from "solid-app-router";
 import { Resource, Show } from "solid-js";
 import {
-  createCloseSignal,
+  createLifecycleSignal,
   createMainButtonSignal,
 } from "telegram-webapp-solid";
 import { Grimoire } from "../components/Grimoire";
@@ -11,7 +11,7 @@ import { createDatabaseSignal } from "../utils/database-signal";
 
 export default function GrimoireRoute() {
   const database = createDatabaseSignal();
-  const close = createCloseSignal();
+  const { close } = createLifecycleSignal();
   const spells = useRouteData<Resource<SpellInGrimoire[]>>();
   const mainButton = createMainButtonSignal({});
   console.log("Grimoire routeData", spells);
