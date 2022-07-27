@@ -1,7 +1,8 @@
 import { SpellInGrimoire } from "shared";
 import { useRouteData } from "solid-app-router";
-import { Resource, Show } from "solid-js";
+import { onMount, Resource, Show } from "solid-js";
 import {
+  createExpandSignal,
   createLifecycleSignal,
   createMainButtonSignal,
 } from "telegram-webapp-solid";
@@ -11,10 +12,15 @@ import { createDatabaseSignal } from "../utils/database-signal";
 
 export default function GrimoireRoute() {
   const database = createDatabaseSignal();
-  const { close } = createLifecycleSignal();
+  const { ready, close } = createLifecycleSignal();
   const spells = useRouteData<Resource<SpellInGrimoire[]>>();
   const mainButton = createMainButtonSignal({});
-  console.log("Grimoire routeData", spells);
+  const [, expand] = createExpandSignal();
+
+  onMount(() => {
+    ready();
+    expand();
+  });
 
   return (
     <Show when={!spells.loading && !spells.error}>

@@ -13,14 +13,6 @@ const SpellRoute = lazy(() => import("./routes/spell.route"));
 const SpellSearchRoute = lazy(() => import("./routes/spell-search.route"));
 
 export function App() {
-  const { ready } = createLifecycleSignal();
-  const [, expand] = createExpandSignal();
-
-  onMount(() => {
-    ready();
-    expand();
-  });
-
   return (
     <Router>
       <Suspense
