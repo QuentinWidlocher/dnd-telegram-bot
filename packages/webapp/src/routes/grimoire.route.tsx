@@ -1,6 +1,6 @@
 import { SpellInGrimoire } from "shared";
 import { useRouteData } from "solid-app-router";
-import { onMount, Resource, Show } from "solid-js";
+import { createEffect, onMount, Resource, Show } from "solid-js";
 import {
   createExpandSignal,
   createLifecycleSignal,
@@ -17,9 +17,11 @@ export default function GrimoireRoute() {
   const mainButton = createMainButtonSignal({});
   const [, expand] = createExpandSignal();
 
-  onMount(() => {
-    ready();
-    expand();
+  createEffect(() => {
+    if (!spells.loading && !spells.error) {
+      ready();
+      expand();
+    }
   });
 
   return (
