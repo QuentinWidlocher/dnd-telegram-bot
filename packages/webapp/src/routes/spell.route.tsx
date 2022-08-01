@@ -131,7 +131,9 @@ export default function SpellRoute() {
             class="text-left flex-grow overflow-y-auto"
             innerHTML={
               data.spell.description +
-              (data.spell.higherLevel ? `<hr>${data.spell.higherLevel}` : "")
+              (data.spell.higherLevel
+                ? `<hr class="my-5 border-hint">${data.spell.higherLevel}`
+                : "")
             }
           ></p>
           <Show
